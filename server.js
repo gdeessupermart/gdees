@@ -1,12 +1,17 @@
 // server.js - Serverless Vendor Management System for Vercel
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static files (for local development)
+app.use(express.static('.'));
+app.use(express.static('public'));
 
 // In-memory database (persists during function lifetime)
 let database = {
@@ -24,16 +29,30 @@ function initializeDatabase() {
       { 
         id: 1672531200000, 
         name: "Fresh Farms Co.", 
-        contact: "john@freshfarms.com", 
+        contactPerson: "John Smith",
         phone: "+1-555-0123",
+        email: "john@freshfarms.com", 
+        paymentTerms: "credit",
+        visitFrequency: "weekly",
+        lastVisit: "2024-01-15",
+        nextVisit: "2024-01-22",
+        hasDisplay: "yes",
+        displayRent: 5000,
         status: "active",
         dateAdded: "2024-01-01"
       },
       { 
         id: 1672617600000, 
         name: "Dairy Delights", 
-        contact: "mary@dairydelights.com", 
+        contactPerson: "Mary Johnson",
         phone: "+1-555-0456",
+        email: "mary@dairydelights.com", 
+        paymentTerms: "advance",
+        visitFrequency: "biweekly",
+        lastVisit: "2024-01-10",
+        nextVisit: "2024-01-24",
+        hasDisplay: "no",
+        displayRent: 0,
         status: "active",
         dateAdded: "2024-01-02"
       }
@@ -43,15 +62,17 @@ function initializeDatabase() {
       { 
         id: 1672704000000, 
         vendorId: 1672531200000, 
-        name: "Farm Fresh", 
-        category: "Produce",
+        name: "Farm Fresh Vegetables", 
+        category: "groceries",
+        sku: "FF001",
         dateAdded: "2024-01-03"
       },
       { 
         id: 1672790400000, 
         vendorId: 1672617600000, 
-        name: "Creamy Choice", 
-        category: "Dairy",
+        name: "Creamy Choice Milk", 
+        category: "dairy",
+        sku: "CC002",
         dateAdded: "2024-01-04"
       }
     ];
@@ -60,14 +81,23 @@ function initializeDatabase() {
       {
         id: 1672876800000,
         vendorId: 1672531200000,
-        title: "Late delivery",
-        description: "Order #123 was delivered 2 days late",
+        productName: "Organic Tomatoes",
+        issueType: "expired",
+        quantity: 10,
+        dateFound: "2024-01-05",
+        estimatedLoss: 250,
+        description: "Found 10 kg of tomatoes past expiry date",
         status: "pending",
         dateAdded: "2024-01-05"
       }
     ];
   }
 }
+
+// Serve HTML file at root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // API Routes
 
@@ -207,6 +237,7 @@ app.get('/api/backup', (req, res) => {
 
 // Health check
 app.get('/health', (req, res) => {
+  initializeDatabase();
   res.json({ 
     status: 'healthy',
     timestamp: new Date().toISOString(),
@@ -218,21 +249,13 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Root endpoint
-app.get('/', (req, res) => {
-  res.json({ 
-    message: 'Supermart Vendor Management API',
-    version: '1.0',
-    endpoints: {
-      data: '/api/data',
-      vendors: '/api/vendors',
-      brands: '/api/brands',
-      issues: '/api/issues',
-      backup: '/api/backup',
-      health: '/health'
-    }
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
   });
-});
+}
 
 // Export for Vercel serverless deployment
 module.exports = app;
