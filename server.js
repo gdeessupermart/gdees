@@ -249,11 +249,29 @@ app.get('/health', (req, res) => {
   });
 });
 
+// API info endpoint
+app.get('/api/info', (req, res) => {
+  res.json({ 
+    message: 'Supermart Vendor Management API',
+    version: '1.0',
+    endpoints: {
+      data: '/api/data',
+      vendors: '/api/vendors',
+      brands: '/api/brands',
+      issues: '/api/issues',
+      backup: '/api/backup',
+      health: '/health'
+    }
+  });
+});
+
 // For local development
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📱 Frontend: http://localhost:${PORT}/`);
+    console.log(`🔗 API Info: http://localhost:${PORT}/api/info`);
   });
 }
 
