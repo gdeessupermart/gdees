@@ -96,7 +96,33 @@ function initializeDatabase() {
 
 // Serve HTML file at root
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  // For Vercel serverless, we need to read the file differently
+  const fs = require('fs');
+  const htmlPath = path.join(__dirname, 'index.html');
+  
+  try {
+    if (fs.existsSync(htmlPath)) {
+      const html = fs.readFileSync(htmlPath, 'utf8');
+      res.setHeader('Content-Type', 'text/html');
+      res.send(html);
+    } else {
+      // Fallback if file doesn't exist
+      res.setHeader('Content-Type', 'text/html');
+      res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head><title>Vendor Management</title></head>
+        <body>
+          <h1>Vendor Management System</h1>
+          <p>API is running. Visit <a href="/api/info">/api/info</a> for endpoints.</p>
+          <p>HTML file not found at: ${htmlPath}</p>
+        </body>
+        </html>
+      `);
+    }
+  } catch (error) {
+    res.status(500).send('Error loading page: ' + error.message);
+  }
 });
 
 // API Routes
