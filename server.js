@@ -1,223 +1,238 @@
-// server.js - Lightweight Node.js Vendor Management System
+// server.js - Serverless Vendor Management System for Vercel
 const express = require('express');
-const fs = require('fs').promises;
-const path = require('path');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const DB_FILE = 'database.json';
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
 
-// Initialize database
-async function initializeDatabase() {
-try {
-await fs.access(DB_FILE);
-console.log('Database file exists');
-} catch (error) {
-console.log('Creating new database file...');
-const initialData = {
-vendors: [],
-brands: [],
-issues: [],
-lastSaved: new Date().toISOString(),
-version: '1.0'
+// In-memory database (persists during function lifetime)
+let database = {
+  vendors: [],
+  brands: [],
+  issues: [],
+  lastSaved: new Date().toISOString(),
+  version: '1.0'
 };
-await fs.writeFile(DB_FILE, JSON.stringify(initialData, null, 2));
-console.log('Database file created');
-}
-}
 
-// Read database
-async function readDatabase() {
-try {
-const data = await fs.readFile(DB_FILE, 'utf8');
-return JSON.parse(data);
-} catch (error) {
-console.error('Error reading database:', error);
-return { vendors: [], brands: [], issues: [] };
-}
-}
-
-// Write database
-async function writeDatabase(data) {
-try {
-data.lastSaved = new Date().toISOString();
-await fs.writeFile(DB_FILE, JSON.stringify(data, null, 2));
-return true;
-} catch (error) {
-console.error('Error writing database:', error);
-return false;
-}
+// Initialize with sample data if empty
+function initializeDatabase() {
+  if (database.vendors.length === 0) {
+    database.vendors = [
+      { 
+        id: 1672531200000, 
+        name: "Fresh Farms Co.", 
+        contact: "john@freshfarms.com", 
+        phone: "+1-555-0123",
+        status: "active",
+        dateAdded: "2024-01-01"
+      },
+      { 
+        id: 1672617600000, 
+        name: "Dairy Delights", 
+        contact: "mary@dairydelights.com", 
+        phone: "+1-555-0456",
+        status: "active",
+        dateAdded: "2024-01-02"
+      }
+    ];
+    
+    database.brands = [
+      { 
+        id: 1672704000000, 
+        vendorId: 1672531200000, 
+        name: "Farm Fresh", 
+        category: "Produce",
+        dateAdded: "2024-01-03"
+      },
+      { 
+        id: 1672790400000, 
+        vendorId: 1672617600000, 
+        name: "Creamy Choice", 
+        category: "Dairy",
+        dateAdded: "2024-01-04"
+      }
+    ];
+    
+    database.issues = [
+      {
+        id: 1672876800000,
+        vendorId: 1672531200000,
+        title: "Late delivery",
+        description: "Order #123 was delivered 2 days late",
+        status: "pending",
+        dateAdded: "2024-01-05"
+      }
+    ];
+  }
 }
 
 // API Routes
 
 // Get all data
-app.get('/api/data', async (req, res) => {
-try {
-const data = await readDatabase();
-res.json(data);
-} catch (error) {
-res.status(500).json({ error: 'Failed to read database' });
-}
+app.get('/api/data', (req, res) => {
+  try {
+    initializeDatabase();
+    res.json(database);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to read database' });
+  }
 });
 
 // Add vendor
-app.post('/api/vendors', async (req, res) => {
-try {
-const data = await readDatabase();
-const vendor = {
-id: Date.now(),
-...req.body,
-dateAdded: new Date().toISOString().split('T')[0]
-};
-data.vendors.push(vendor);
-
-if (await writeDatabase(data)) {
-res.json({ success: true, vendor });
-} else {
-res.status(500).json({ error: 'Failed to save vendor' });
-}
-} catch (error) {
-res.status(500).json({ error: 'Failed to add vendor' });
-}
+app.post('/api/vendors', (req, res) => {
+  try {
+    initializeDatabase();
+    const vendor = {
+      id: Date.now(),
+      ...req.body,
+      dateAdded: new Date().toISOString().split('T')[0]
+    };
+    database.vendors.push(vendor);
+    database.lastSaved = new Date().toISOString();
+    
+    res.json({ success: true, vendor });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add vendor' });
+  }
 });
 
 // Add brand
-app.post('/api/brands', async (req, res) => {
-try {
-const data = await readDatabase();
-const brand = {
-id: Date.now(),
-...req.body,
-dateAdded: new Date().toISOString().split('T')[0]
-};
-data.brands.push(brand);
-
-if (await writeDatabase(data)) {
-res.json({ success: true, brand });
-} else {
-res.status(500).json({ error: 'Failed to save brand' });
-}
-} catch (error) {
-res.status(500).json({ error: 'Failed to add brand' });
-}
+app.post('/api/brands', (req, res) => {
+  try {
+    initializeDatabase();
+    const brand = {
+      id: Date.now(),
+      ...req.body,
+      dateAdded: new Date().toISOString().split('T')[0]
+    };
+    database.brands.push(brand);
+    database.lastSaved = new Date().toISOString();
+    
+    res.json({ success: true, brand });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add brand' });
+  }
 });
 
 // Add issue
-app.post('/api/issues', async (req, res) => {
-try {
-const data = await readDatabase();
-const issue = {
-id: Date.now(),
-...req.body,
-status: 'pending',
-dateAdded: new Date().toISOString().split('T')[0]
-};
-data.issues.push(issue);
-
-if (await writeDatabase(data)) {
-res.json({ success: true, issue });
-} else {
-res.status(500).json({ error: 'Failed to save issue' });
-}
-} catch (error) {
-res.status(500).json({ error: 'Failed to add issue' });
-}
+app.post('/api/issues', (req, res) => {
+  try {
+    initializeDatabase();
+    const issue = {
+      id: Date.now(),
+      ...req.body,
+      status: 'pending',
+      dateAdded: new Date().toISOString().split('T')[0]
+    };
+    database.issues.push(issue);
+    database.lastSaved = new Date().toISOString();
+    
+    res.json({ success: true, issue });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add issue' });
+  }
 });
 
 // Update issue status
-app.put('/api/issues/:id', async (req, res) => {
-try {
-const data = await readDatabase();
-const issue = data.issues.find(i => i.id == req.params.id);
+app.put('/api/issues/:id', (req, res) => {
+  try {
+    initializeDatabase();
+    const issue = database.issues.find(i => i.id == req.params.id);
 
-if (issue) {
-Object.assign(issue, req.body);
-if (req.body.status === 'resolved') {
-issue.resolvedDate = new Date().toISOString().split('T')[0];
-}
-
-if (await writeDatabase(data)) {
-res.json({ success: true, issue });
-} else {
-res.status(500).json({ error: 'Failed to update issue' });
-}
-} else {
-res.status(404).json({ error: 'Issue not found' });
-}
-} catch (error) {
-res.status(500).json({ error: 'Failed to update issue' });
-}
+    if (issue) {
+      Object.assign(issue, req.body);
+      if (req.body.status === 'resolved') {
+        issue.resolvedDate = new Date().toISOString().split('T')[0];
+      }
+      database.lastSaved = new Date().toISOString();
+      
+      res.json({ success: true, issue });
+    } else {
+      res.status(404).json({ error: 'Issue not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update issue' });
+  }
 });
 
 // Delete vendor
-app.delete('/api/vendors/:id', async (req, res) => {
-try {
-const data = await readDatabase();
-const vendorId = parseInt(req.params.id);
+app.delete('/api/vendors/:id', (req, res) => {
+  try {
+    initializeDatabase();
+    const vendorId = parseInt(req.params.id);
 
-data.vendors = data.vendors.filter(v => v.id !== vendorId);
-data.brands = data.brands.filter(b => b.vendorId !== vendorId);
-data.issues = data.issues.filter(i => i.vendorId !== vendorId);
+    database.vendors = database.vendors.filter(v => v.id !== vendorId);
+    database.brands = database.brands.filter(b => b.vendorId !== vendorId);
+    database.issues = database.issues.filter(i => i.vendorId !== vendorId);
+    database.lastSaved = new Date().toISOString();
 
-if (await writeDatabase(data)) {
-res.json({ success: true });
-} else {
-res.status(500).json({ error: 'Failed to delete vendor' });
-}
-} catch (error) {
-res.status(500).json({ error: 'Failed to delete vendor' });
-}
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete vendor' });
+  }
 });
 
 // Delete brand
-app.delete('/api/brands/:id', async (req, res) => {
-try {
-const data = await readDatabase();
-data.brands = data.brands.filter(b => b.id != req.params.id);
-
-if (await writeDatabase(data)) {
-res.json({ success: true });
-} else {
-res.status(500).json({ error: 'Failed to delete brand' });
-}
-} catch (error) {
-res.status(500).json({ error: 'Failed to delete brand' });
-}
+app.delete('/api/brands/:id', (req, res) => {
+  try {
+    initializeDatabase();
+    database.brands = database.brands.filter(b => b.id != req.params.id);
+    database.lastSaved = new Date().toISOString();
+    
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete brand' });
+  }
 });
 
 // Create backup
-app.get('/api/backup', async (req, res) => {
-try {
-const data = await readDatabase();
-const backupData = {
-...data,
-backupCreated: new Date().toISOString()
-};
+app.get('/api/backup', (req, res) => {
+  try {
+    initializeDatabase();
+    const backupData = {
+      ...database,
+      backupCreated: new Date().toISOString()
+    };
 
-res.setHeader('Content-Type', 'application/json');
-res.setHeader('Content-Disposition', `attachment; filename="backup_${new Date().toISOString().split('T')[0]}.json"`);
-res.send(JSON.stringify(backupData, null, 2));
-} catch (error) {
-res.status(500).json({ error: 'Failed to create backup' });
-}
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="backup_${new Date().toISOString().split('T')[0]}.json"`);
+    res.send(JSON.stringify(backupData, null, 2));
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create backup' });
+  }
 });
 
-// Start server
-async function startServer() {
-await initializeDatabase();
-
-app.listen(PORT, () => {
-console.log(`🚀 Supermart Vendor Management Server running on http://localhost:${PORT}`);
-console.log(`📁 Database file: ${path.resolve(DB_FILE)}`);
-console.log('📊 Ready to manage your vendors!');
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    database: {
+      vendors: database.vendors.length,
+      brands: database.brands.length,
+      issues: database.issues.length
+    }
+  });
 });
-}
 
-startServer().catch(console.error);
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Supermart Vendor Management API',
+    version: '1.0',
+    endpoints: {
+      data: '/api/data',
+      vendors: '/api/vendors',
+      brands: '/api/brands',
+      issues: '/api/issues',
+      backup: '/api/backup',
+      health: '/health'
+    }
+  });
+});
+
+// Export for Vercel serverless deployment
+module.exports = app;
