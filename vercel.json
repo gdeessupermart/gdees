@@ -1,13 +1,4 @@
 {
-  "version": 2,
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    }
-  ]
+  "buildCommand": "cp -r public dist",
+  "outputDirectory": "dist"
 }
