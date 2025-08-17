@@ -1,0 +1,28 @@
+{
+  "name": "supermart-vendor-management",
+  "version": "1.0.0",
+  "description": "Lightweight vendor management system for supermarkets",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "vendor",
+    "management",
+    "supermarket",
+    "inventory"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

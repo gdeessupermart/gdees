@@ -1,0 +1,110 @@
+{
+  "vendors": [
+    {
+      "id": 1,
+      "name": "Fresh Foods Distributors",
+      "contactPerson": "Rajesh Kumar",
+      "phone": "+91 9876543210",
+      "email": "rajesh@freshfoods.com",
+      "paymentTerms": "credit",
+      "visitFrequency": "weekly",
+      "lastVisit": "2025-08-10",
+      "nextVisit": "2025-08-24",
+      "hasDisplay": "yes",
+      "displayRent": 5000,
+      "termsConditions": "30-day credit period, return policy for expired items",
+      "remarks": "Reliable supplier for groceries and snacks",
+      "dateAdded": "2025-08-01"
+    },
+    {
+      "id": 2,
+      "name": "Dairy Plus Suppliers",
+      "contactPerson": "Priya Sharma",
+      "phone": "+91 9876543211",
+      "email": "priya@dairyplus.com",
+      "paymentTerms": "advance",
+      "visitFrequency": "daily",
+      "lastVisit": "2025-08-16",
+      "nextVisit": "2025-08-18",
+      "hasDisplay": "no",
+      "displayRent": 0,
+      "termsConditions": "Cash on delivery, immediate return for expired dairy products",
+      "remarks": "Specializes in dairy and frozen foods",
+      "dateAdded": "2025-08-01"
+    },
+    {
+      "id": 1755432488394,
+      "name": "sdfsfsdf",
+      "contactPerson": "sdfsdfs",
+      "phone": "987654321",
+      "email": "",
+      "paymentTerms": "advance",
+      "visitFrequency": "daily",
+      "lastVisit": "",
+      "nextVisit": "",
+      "hasDisplay": "no",
+      "displayRent": 0,
+      "termsConditions": "",
+      "remarks": "",
+      "dateAdded": "2025-08-17"
+    },
+    {
+      "id": 1755433441386,
+      "name": "testingsdfsd",
+      "contactPerson": "sfsfs",
+      "phone": "fsdf",
+      "email": "sdfsdfsdfsd",
+      "paymentTerms": "advance",
+      "visitFrequency": "daily",
+      "lastVisit": "",
+      "nextVisit": "",
+      "hasDisplay": "no",
+      "displayRent": 0,
+      "termsConditions": "",
+      "remarks": "",
+      "dateAdded": "2025-08-17"
+    }
+  ],
+  "brands": [
+    {
+      "id": 101,
+      "vendorId": 1,
+      "name": "Maggi Noodles",
+      "sku": "MAG-ALL",
+      "category": "groceries",
+      "dateAdded": "2025-08-01"
+    },
+    {
+      "id": 102,
+      "vendorId": 1,
+      "name": "Britannia Biscuits",
+      "sku": "BRI-ALL",
+      "category": "snacks",
+      "dateAdded": "2025-08-01"
+    },
+    {
+      "id": 103,
+      "vendorId": 2,
+      "name": "Amul Dairy Products",
+      "sku": "AMU-ALL",
+      "category": "dairy",
+      "dateAdded": "2025-08-01"
+    }
+  ],
+  "issues": [
+    {
+      "id": 201,
+      "vendorId": 1,
+      "productName": "Maggi Noodles 70g",
+      "issueType": "expired",
+      "quantity": 15,
+      "dateFound": "2025-08-15",
+      "estimatedLoss": 180,
+      "description": "Found 15 packets expired on 14th Aug. Need to discuss return policy.",
+      "status": "pending",
+      "dateAdded": "2025-08-15"
+    }
+  ],
+  "lastSaved": "2025-08-17T12:24:01.386Z",
+  "version": "1.0"
+}
