@@ -5,17 +5,25 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js",
-    "build": "echo 'Build complete'"
+    "dev": "nodemon server.js",
+    "build": "mkdir -p dist && cp -r public/* dist/ 2>/dev/null || echo 'No public files to copy'"
   },
-  "keywords": ["vendor", "management", "supermarket", "inventory"],
+  "keywords": [
+    "vendor",
+    "management",
+    "supermarket",
+    "inventory"
+  ],
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5"
   },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   }
 }
