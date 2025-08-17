@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "build": "mkdir -p dist && cp -r public/* dist/ 2>/dev/null || echo 'No public files to copy'"
+    "dev": "nodemon server.js"
   },
   "keywords": [
     "vendor",
