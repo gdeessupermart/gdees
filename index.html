@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Supermart Vendor Management System</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
@@ -14,7 +14,7 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       padding: 20px;
@@ -77,6 +77,7 @@
       display: flex;
       margin-bottom: 30px;
       border-bottom: 2px solid #e0e0e0;
+      flex-wrap: wrap;
     }
 
     .tab {
@@ -160,6 +161,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       margin-right: 10px;
+      margin-bottom: 10px;
     }
 
     .btn-primary {
@@ -200,6 +202,26 @@
     .btn-danger:hover {
       transform: translateY(-2px);
       box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(149, 165, 166, 0.3);
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #17a2b8, #138496);
+      color: white;
+    }
+
+    .btn-info:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
     }
 
     .table-container {
@@ -343,6 +365,139 @@
       padding: 5px 12px;
       font-size: 0.8rem;
     }
+
+    .invoice-payment-section {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      border-left: 4px solid #17a2b8;
+    }
+
+    .invoice-payment-section h3 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .payment-status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .payment-status.paid {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+
+    .payment-status.pending {
+      background: #fff3e0;
+      color: #ef6c00;
+    }
+
+    .payment-status.overdue {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .payment-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .payment-info div {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .payment-info strong {
+      color: #2c3e50;
+    }
+
+    /* Expandable row styles */
+    .vendor-details-row,
+    .invoice-details-row {
+      background: #f8f9fa;
+    }
+
+    .vendor-details-content,
+    .invoice-details-content,
+    .issue-details-content {
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin: 10px 0;
+      border: 1px solid #e9ecef;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .details-grid h5,
+    .details-grid h6 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 5px;
+    }
+
+    .details-grid p {
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .details-grid strong {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .details-grid div[style*="background: white"] {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      max-height: 100px;
+      overflow-y: auto;
+      background: white;
+      font-family: monospace;
+      font-size: 0.9rem;
+      line-height: 1.3;
+    }
+
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+    }
+
+    .btn-info {
+      background: #17a2b8;
+      color: white;
+      border: none;
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+      border: none;
+    }
+
+    .btn-info:hover,
+    .btn-success:hover {
+      opacity: 0.8;
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -351,25 +506,24 @@
     <div class="header">
       <div class="save-status" id="saveStatus">🟢 Connected</div>
       <h1>🛒 Supermart Vendor Management</h1>
-      <p>Automatic Database.json File Management</p>
+      <p>Complete Vendor, Invoice & Payment Tracking</p>
     </div>
 
     <div class="content">
-      <div class="backup-section">
-        <h3>💾 Database Management</h3>
-        <div class="alert alert-success">
-          <strong>🔄 Auto-Save:</strong> All changes are automatically saved to database.json file. No manual saving
-          required!
-        </div>
-        <button class="btn btn-warning" onclick="createBackup()">📦 Create Backup</button>
-        <div id="dataStatus" style="margin-top: 15px; font-size: 0.9rem; color: #666;"></div>
-      </div>
-
       <div class="tabs">
-        <button class="tab active" onclick="showTab('vendors')">Vendor Management</button>
+        <button class="tab active" onclick="showTab('vendors')">
+          Vendor Management
+        </button>
+        <button class="tab" onclick="showTab('invoices')">
+          Invoice & Payments
+        </button>
         <button class="tab" onclick="showTab('brands')">Vendor Brands</button>
-        <button class="tab" onclick="showTab('issues')">Expired/Damaged Items</button>
-        <button class="tab" onclick="showTab('reports')">Reports & Export</button>
+        <button class="tab" onclick="showTab('issues')">
+          Expired/Damaged Items
+        </button>
+        <button class="tab" onclick="showTab('reports')">
+          Reports & Export
+        </button>
       </div>
 
       <div id="vendors" class="tab-content active">
@@ -377,19 +531,19 @@
         <div class="form-grid">
           <div class="form-group">
             <label>Vendor Name*</label>
-            <input type="text" id="vendorName" placeholder="e.g., ABC Distributors" required>
+            <input type="text" id="vendorName" placeholder="e.g., ABC Distributors" required />
           </div>
           <div class="form-group">
             <label>Contact Person</label>
-            <input type="text" id="contactPerson" placeholder="Sales representative name">
+            <input type="text" id="contactPerson" placeholder="Sales representative name" />
           </div>
           <div class="form-group">
             <label>Phone Number</label>
-            <input type="tel" id="phoneNumber" placeholder="+91 9876543210">
+            <input type="tel" id="phoneNumber" placeholder="+91 9876543210" />
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" id="email" placeholder="vendor@company.com">
+            <input type="email" id="email" placeholder="vendor@company.com" />
           </div>
           <div class="form-group">
             <label>Payment Terms</label>
@@ -410,11 +564,11 @@
           </div>
           <div class="form-group">
             <label>Last Visit Date</label>
-            <input type="date" id="lastVisit">
+            <input type="date" id="lastVisit" />
           </div>
           <div class="form-group">
             <label>Next Expected Visit</label>
-            <input type="date" id="nextVisit">
+            <input type="date" id="nextVisit" />
           </div>
           <div class="form-group">
             <label>Display Space</label>
@@ -425,7 +579,7 @@
           </div>
           <div class="form-group">
             <label>Display Rent (₹/month)</label>
-            <input type="number" id="displayRent" placeholder="0" min="0">
+            <input type="number" id="displayRent" placeholder="0" min="0" />
           </div>
         </div>
         <div class="form-group">
@@ -438,8 +592,12 @@
           <textarea id="remarks" placeholder="Additional notes about this vendor"></textarea>
         </div>
         <div class="actions">
-          <button class="btn btn-primary" onclick="addVendor()">Add Vendor</button>
-          <button class="btn btn-warning" onclick="clearVendorForm()">Clear Form</button>
+          <button class="btn btn-primary" onclick="addVendor(event)">
+            Add Vendor
+          </button>
+          <button class="btn btn-warning" onclick="clearVendorForm()">
+            Clear Form
+          </button>
         </div>
 
         <div class="table-container">
@@ -451,15 +609,222 @@
                 <th>Contact Person</th>
                 <th>Phone</th>
                 <th>Payment Terms</th>
-                <th>Visit Frequency</th>
-                <th>Last Visit</th>
-                <th>Next Visit</th>
+                <th>Last Invoice</th>
+                <th>Payment Status</th>
                 <th>Display Rent</th>
                 <th>Pending Issues</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody id="vendorTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="invoices" class="tab-content">
+        <h2>Invoice & Payment Management</h2>
+
+        <div class="summary-cards">
+          <div class="summary-card">
+            <h3 id="totalOutstanding">₹0</h3>
+            <p>Total Outstanding</p>
+          </div>
+          <div class="summary-card">
+            <h3 id="pendingPayments">0</h3>
+            <p>Pending Payments</p>
+          </div>
+          <div class="summary-card">
+            <h3 id="overduePayments">0</h3>
+            <p>Overdue Payments</p>
+          </div>
+          <div class="summary-card">
+            <h3 id="totalCredits">₹0</h3>
+            <p>Total Credits</p>
+          </div>
+          <div class="summary-card">
+            <h3 id="thisMonthPaid">₹0</h3>
+            <p>This Month Paid</p>
+          </div>
+        </div>
+
+        <!-- Invoice Creation Section -->
+        <h3>📋 Create New Invoice</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Select Vendor*</label>
+            <select id="invoiceVendor" required>
+              <option value="">Choose a vendor...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Invoice Number*</label>
+            <input type="text" id="invoiceNumber" placeholder="e.g., INV-2024-001" required />
+          </div>
+          <div class="form-group">
+            <label>Invoice Date*</label>
+            <input type="date" id="invoiceDate" required />
+          </div>
+          <div class="form-group">
+            <label>Invoice Amount (₹)*</label>
+            <input type="number" id="invoiceAmount" placeholder="Total invoice amount" step="0.01" min="0" required />
+          </div>
+          <div class="form-group">
+            <label>Total Items Count</label>
+            <input type="number" id="totalItems" placeholder="Number of items in bill" min="1" />
+          </div>
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" id="dueDate" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" onclick="createInvoice(event)">
+            Create Invoice
+          </button>
+          <button class="btn btn-warning" onclick="clearInvoiceForm()">
+            Clear Form
+          </button>
+        </div>
+
+        <!-- Payment Creation Section -->
+        <div class="invoice-payment-section" style="margin-top: 30px">
+          <h3>💳 Record Payment</h3>
+          <div class="alert alert-info">
+            <strong>💡 Tip:</strong> First create an invoice, then record
+            payments against it. Each payment will be tracked separately.
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Select Invoice*</label>
+              <select id="paymentInvoice" required>
+                <option value="">Choose an invoice...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Payment Amount (₹)*</label>
+              <input type="number" id="paymentAmount" placeholder="Amount paid" step="0.01" min="0" required />
+            </div>
+            <div class="form-group">
+              <label>Payment Method*</label>
+              <select id="paymentMethod" required>
+                <option value="">Select method...</option>
+                <option value="cheque">Cheque</option>
+                <option value="cash">Cash</option>
+                <option value="online">Online Transfer</option>
+                <option value="card">Card Payment</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Payment Date*</label>
+              <input type="date" id="paymentDate" required />
+            </div>
+            <div class="form-group">
+              <label>Cheque Number</label>
+              <input type="text" id="chequeNumber" placeholder="Cheque number (if applicable)" />
+            </div>
+            <div class="form-group">
+              <label>Cheque Date</label>
+              <input type="date" id="chequeDate" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Payment Notes</label>
+            <textarea id="paymentNotes" placeholder="Any additional notes about this payment"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-success" onclick="recordPayment(event)">
+              Record Payment
+            </button>
+            <button class="btn btn-warning" onclick="clearPaymentForm()">
+              Clear Payment Form
+            </button>
+          </div>
+        </div>
+
+        <!-- Credit Note Section -->
+        <div class="credit-note-section" style="margin-top: 30px">
+          <h3>📝 Record Credit Note</h3>
+          <div class="alert alert-info">
+            <strong>💡 Tip:</strong> Create credit notes for returns, damaged
+            goods, or expired items to reduce invoice amounts.
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Select Invoice*</label>
+              <select id="creditNoteInvoice" required>
+                <option value="">Choose an invoice...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>CRN Number*</label>
+              <input type="text" id="crnNumber" placeholder="e.g., CRN-2024-001" required />
+            </div>
+            <div class="form-group">
+              <label>Credit Date*</label>
+              <input type="date" id="creditDate" required />
+            </div>
+            <div class="form-group">
+              <label>Credit Amount (₹)*</label>
+              <input type="number" id="creditAmount" placeholder="Amount to be credited" step="0.01" min="0" required />
+            </div>
+            <div class="form-group">
+              <label>Items Count</label>
+              <input type="number" id="itemsReturned" placeholder="Number of items returned" min="0" />
+            </div>
+            <div class="form-group">
+              <label>Return Reason</label>
+              <select id="returnReason">
+                <option value="">Select reason...</option>
+                <option value="expired">Expired</option>
+                <option value="damaged">Damaged</option>
+                <option value="defective">Defective</option>
+                <option value="wrong_item">Wrong Item</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Credit Note Description</label>
+            <textarea id="creditNoteDescription" placeholder="Details about the credit note"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-warning" onclick="createCreditNote(event)">
+              Create Credit Note
+            </button>
+            <button class="btn btn-secondary" onclick="clearCreditNoteForm()">
+              Clear Credit Note Form
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <h3>Invoice & Payment History</h3>
+          <div class="alert alert-info">
+            <strong>💡 New Payment System:</strong> Each payment is now
+            tracked separately. Click "View Payments" to see all payments for
+            an invoice.
+          </div>
+          <table id="invoiceTable">
+            <thead>
+              <tr class="th">
+                <th>Vendor</th>
+                <th>Invoice No.</th>
+                <th>Invoice Date</th>
+                <th>Amount</th>
+                <th>Paid</th>
+                <th>Credits</th>
+                <th>Outstanding</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="invoiceTableBody"></tbody>
           </table>
         </div>
       </div>
@@ -475,11 +840,11 @@
           </div>
           <div class="form-group">
             <label>Brand/Product Name*</label>
-            <input type="text" id="brandName" placeholder="e.g., Maggi Noodles, Britannia Biscuits, etc." required>
+            <input type="text" id="brandName" placeholder="e.g., Maggi Noodles, Britannia Biscuits, etc." required />
           </div>
           <div class="form-group">
             <label>SKU/Product Code</label>
-            <input type="text" id="brandSKU" placeholder="Optional: Product SKU or code">
+            <input type="text" id="brandSKU" placeholder="Optional: Product SKU or code" />
           </div>
           <div class="form-group">
             <label>Category</label>
@@ -497,8 +862,32 @@
           </div>
         </div>
         <div class="actions">
-          <button class="btn btn-primary" onclick="addBrand()">Add Brand/Product</button>
-          <button class="btn btn-warning" onclick="clearBrandForm()">Clear Form</button>
+          <button class="btn btn-primary" onclick="addBrand(event)">
+            Add Brand/Product
+          </button>
+          <button class="btn btn-warning" onclick="clearBrandForm()">
+            Clear Form
+          </button>
+        </div>
+
+        <div class="search-filter">
+          <input type="text" id="brandSearchInput" placeholder="Search brands by name, vendor, or category..." />
+          <select id="brandVendorFilter">
+            <option value="">All Vendors</option>
+          </select>
+          <select id="brandCategoryFilter">
+            <option value="">All Categories</option>
+            <option value="groceries">Groceries</option>
+            <option value="dairy">Dairy Products</option>
+            <option value="beverages">Beverages</option>
+            <option value="snacks">Snacks</option>
+            <option value="personal_care">Personal Care</option>
+            <option value="household">Household Items</option>
+            <option value="bakery">Bakery</option>
+            <option value="frozen">Frozen Foods</option>
+            <option value="other">Other</option>
+          </select>
+          <button class="btn btn-secondary" onclick="clearBrandSearch()">Clear Search</button>
         </div>
 
         <div class="table-container">
@@ -539,7 +928,12 @@
           </div>
         </div>
 
-        <h3>Report New Issue</h3>
+        <h3>Add Multiple Expired/Damaged Items</h3>
+        <div class="alert alert-warning">
+          <strong>💡 Tip:</strong> Select a vendor and add multiple expired,
+          damaged, or defective items with their quantities and issues.
+        </div>
+
         <div class="form-grid">
           <div class="form-group">
             <label>Select Vendor*</label>
@@ -548,43 +942,34 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Product Name/Brand*</label>
-            <input type="text" id="issueProduct" placeholder="e.g., Maggi Noodles 70g" required>
-          </div>
-          <div class="form-group">
-            <label>Issue Type*</label>
-            <select id="issueType" required>
-              <option value="">Select issue type...</option>
-              <option value="expired">Expired Product</option>
-              <option value="damaged">Damaged Product</option>
-              <option value="defective">Defective Product</option>
-              <option value="wrong_delivery">Wrong Product Delivered</option>
-              <option value="poor_quality">Poor Quality</option>
-              <option value="short_delivery">Short Delivery</option>
-              <option value="other">Other Issue</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Quantity Affected</label>
-            <input type="number" id="issueQuantity" placeholder="Number of units affected" min="1">
-          </div>
-          <div class="form-group">
-            <label>Date Found</label>
-            <input type="date" id="issueDate">
-          </div>
-          <div class="form-group">
-            <label>Estimated Loss (₹)</label>
-            <input type="number" id="issueLoss" placeholder="Estimated financial loss" step="0.01" min="0">
+            <label>Date Found*</label>
+            <input type="date" id="issueDate" required />
           </div>
         </div>
-        <div class="form-group">
-          <label>Issue Description</label>
-          <textarea id="issueDescription"
-            placeholder="Describe the issue in detail (expiry date, damage details, what to discuss with vendor)"></textarea>
+
+        <!-- Multiple Issue Items Section -->
+        <div class="issue-items-section" style="margin-top: 20px">
+          <h4>📦 Issue Items</h4>
+          <div id="issueItemsList">
+            <!-- Dynamic items will be added here -->
+          </div>
+          <button class="btn btn-info" onclick="addIssueItem()" style="margin-top: 10px">
+            ➕ Add Issue Item
+          </button>
         </div>
+
+        <div class="form-group" style="margin-top: 20px">
+          <label>General Description</label>
+          <textarea id="issueDescription" placeholder="Additional notes about the issues"></textarea>
+        </div>
+
         <div class="actions">
-          <button class="btn btn-danger" onclick="addIssue()">Report Issue</button>
-          <button class="btn btn-warning" onclick="clearIssueForm()">Clear Form</button>
+          <button class="btn btn-danger" onclick="createIssueItems(event)">
+            Create Issue Items
+          </button>
+          <button class="btn btn-warning" onclick="clearIssueForm()">
+            Clear Form
+          </button>
         </div>
 
         <div id="issuesList"></div>
@@ -612,65 +997,142 @@
         </div>
 
         <div class="alert alert-info">
-          <strong>📤 Export Options:</strong> Download Excel reports for vendor meetings and accounting.
+          <strong>📤 Export Options:</strong> Download Excel reports for
+          vendor meetings, accounting, and payment tracking.
         </div>
 
-        <div class="actions" style="justify-content: center;">
-          <button class="btn btn-success" onclick="exportVendorData()">📤 Export Vendor Data</button>
-          <button class="btn btn-success" onclick="exportBrandData()">📤 Export Brand Lists</button>
-          <button class="btn btn-danger" onclick="exportIssuesReport()">⚠️ Export Issues Report</button>
-          <button class="btn btn-primary" onclick="exportCompleteData()">📋 Export Complete Database</button>
+        <div class="actions" style="justify-content: center">
+          <button class="btn btn-success" onclick="exportVendorData()">
+            📤 Export Vendor Data
+          </button>
+          <button class="btn btn-success" onclick="exportInvoiceData()">
+            💰 Export Invoice & Payment Data
+          </button>
+          <button class="btn btn-success" onclick="exportBrandData()">
+            📤 Export Brand Lists
+          </button>
+          <button class="btn btn-danger" onclick="exportIssuesReport()">
+            ⚠️ Export Issues Report
+          </button>
+          <button class="btn btn-primary" onclick="exportCompleteData()">
+            📋 Export Complete Database
+          </button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    let vendors = [];
-    let brands = [];
-    let issues = [];
+    // API functions - Updated for Vercel deployment
+    const API_BASE_URL =
+      window.location.port === "5501"
+        ? "http://localhost:3000"
+        : window.location.origin;
 
-    // API functions
-    async function apiCall(endpoint, method = 'GET', data = null) {
+
+    // for formatting date time
+    const dateFormatOptions = {
+      day: '2-digit', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', hour12: true
+    };
+
+    async function apiCall(endpoint, method = "GET", data = null) {
       try {
         const options = {
           method,
-          headers: {'Content-Type': 'application/json'}
+          headers: {"Content-Type": "application/json"},
         };
 
         if (data) {
           options.body = JSON.stringify(data);
         }
 
-        const response = await fetch(endpoint, options);
+        const fullUrl = endpoint.startsWith("http")
+          ? endpoint
+          : `${API_BASE_URL}${endpoint}`;
+
+        console.log(`API Call: ${method} ${fullUrl}`);
+        const response = await fetch(fullUrl, options);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         return await response.json();
       } catch (error) {
-        console.error('API call failed:', error);
-        document.getElementById('saveStatus').textContent = '❌ Connection Error';
+        console.error("API call failed:", error);
+        document.getElementById("saveStatus").textContent =
+          "❌ Connection Error";
         throw error;
       }
     }
 
     async function loadData() {
       try {
-        document.getElementById('saveStatus').textContent = '🔄 Loading...';
-        const data = await apiCall('/api/data');
+        document.getElementById("saveStatus").textContent = "🔄 Loading...";
+        const data = await apiCall("/api/data");
 
         vendors = data.vendors || [];
         brands = data.brands || [];
         issues = data.issues || [];
 
+        // Handle the new API structure - the backend now returns separate invoices and payments
+        // We need to process this data to match the frontend expectations
+        invoicePayments = await processInvoiceData(data);
+
+        console.log("Data loaded:", {
+          vendors: vendors.length,
+          brands: brands.length,
+          issues: issues.length,
+          invoices: invoicePayments.length
+        });
+
+        // Debug: Log the actual data structure
+        if (vendors.length > 0) {
+          console.log("Sample vendor data:", vendors[0]);
+        }
+        if (issues.length > 0) {
+          console.log("Sample issue data:", issues[0]);
+        }
+        if (brands.length > 0) {
+          console.log("Sample brand data:", brands[0]);
+        }
+
         updateAllTables();
         updateDataStatus();
-        document.getElementById('saveStatus').textContent = '🟢 Connected';
+        document.getElementById("saveStatus").textContent = "🟢 Connected";
       } catch (error) {
-        document.getElementById('saveStatus').textContent = '❌ Load Failed';
+        console.error("Failed to load data:", error);
+        document.getElementById("saveStatus").textContent = "❌ Load Failed";
+        alert("❌ Failed to connect to server. Please check your connection.");
       }
     }
 
+    // Process the new invoice data structure from the backend
+    async function processInvoiceData(data) {
+      try {
+        // Get complete invoice data with payments and credits from backend
+        const invoicesResponse = await apiCall("/api/invoices-complete");
+        return invoicesResponse.invoices || [];
+      } catch (error) {
+        console.error("Error loading invoice data:", error);
+        // Fallback to existing data if available
+        return data.invoicePayments || [];
+      }
+    }
+
+    let vendors = [];
+    let brands = [];
+    let issues = [];
+    let invoicePayments = [];
+
     function updateDataStatus() {
-      const statusDiv = document.getElementById('dataStatus');
-      statusDiv.innerHTML = `📊 Current: ${vendors.length} vendors, ${brands.length} brands, ${issues.length} issues | Last updated: ${new Date().toLocaleString()}`;
+      const statusDiv = document.getElementById("dataStatus");
+      if (statusDiv) {
+        statusDiv.innerHTML = `📊 Current: ${vendors.length} vendors, ${brands.length
+          } brands, ${issues.length} issues, ${invoicePayments.length
+          } invoices | Last updated: ${new Date().toLocaleString()}`;
+      }
     }
 
     function updateAllTables() {
@@ -678,278 +1140,1374 @@
       updateVendorTable();
       updateBrandTable();
       updateIssuesDisplay();
+      updateInvoiceTable();
+      updateInvoiceDropdown();
+      updateCreditNoteDropdown();
       updateReportSummary();
+      updateInvoiceSummary();
     }
 
     function showTab(tabName) {
-      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById(tabName).classList.add('active');
-      if (tabName === 'issues') updateIssuesDisplay();
-      if (tabName === 'reports') updateReportSummary();
+      document
+        .querySelectorAll(".tab")
+        .forEach((tab) => tab.classList.remove("active"));
+      document
+        .querySelectorAll(".tab-content")
+        .forEach((content) => content.classList.remove("active"));
+      event?.target.classList.add("active");
+      document.getElementById(tabName).classList.add("active");
+
+      // Store current tab in localStorage
+      localStorage.setItem("currentTab", tabName);
+
+      if (tabName === "issues") updateIssuesDisplay();
+      if (tabName === "reports") updateReportSummary();
+      if (tabName === "invoices") updateInvoiceSummary();
+      if (tabName === "brands") updateBrandFilters();
     }
 
-    async function addVendor() {
+    async function addVendor(event) {
+      // Prevent any default form submission behavior
+      if (event) event.preventDefault();
+
       const vendorData = {
-        name: document.getElementById('vendorName').value,
-        contactPerson: document.getElementById('contactPerson').value,
-        phone: document.getElementById('phoneNumber').value,
-        email: document.getElementById('email').value,
-        paymentTerms: document.getElementById('paymentTerms').value,
-        visitFrequency: document.getElementById('visitFrequency').value,
-        lastVisit: document.getElementById('lastVisit').value,
-        nextVisit: document.getElementById('nextVisit').value,
-        hasDisplay: document.getElementById('hasDisplay').value,
-        displayRent: parseFloat(document.getElementById('displayRent').value) || 0,
-        termsConditions: document.getElementById('termsConditions').value,
-        remarks: document.getElementById('remarks').value
+        name: document.getElementById("vendorName").value,
+        contactPerson: document.getElementById("contactPerson").value,
+        phone: document.getElementById("phoneNumber").value,
+        email: document.getElementById("email").value,
+        paymentTerms: document.getElementById("paymentTerms").value,
+        visitFrequency: document.getElementById("visitFrequency").value,
+        lastVisit: document.getElementById("lastVisit").value,
+        nextVisit: document.getElementById("nextVisit").value,
+        hasDisplay: document.getElementById("hasDisplay").value,
+        displayRent:
+          parseFloat(document.getElementById("displayRent").value) || 0,
+        termsConditions: document.getElementById("termsConditions").value,
+        remarks: document.getElementById("remarks").value,
       };
 
       if (!vendorData.name) {
-        alert('Please enter vendor name');
+        alert("Please enter vendor name");
         return;
       }
 
       try {
-        const result = await apiCall('/api/vendors', 'POST', vendorData);
+        const result = await apiCall("/api/vendors", "POST", vendorData);
         if (result.success) {
           vendors.push(result.vendor);
           updateVendorDropdowns();
           updateVendorTable();
           clearVendorForm();
           updateDataStatus();
-          alert('✅ Vendor added and saved automatically!');
+          alert("✅ Vendor added and saved to database.json!");
+        } else {
+          throw new Error(result.error || "Unknown error");
         }
       } catch (error) {
-        alert('❌ Failed to add vendor');
+        console.error("Failed to add vendor:", error);
+        alert("❌ Failed to add vendor: " + error.message);
       }
     }
 
     function clearVendorForm() {
-      document.getElementById('vendorName').value = '';
-      document.getElementById('contactPerson').value = '';
-      document.getElementById('phoneNumber').value = '';
-      document.getElementById('email').value = '';
-      document.getElementById('paymentTerms').value = 'advance';
-      document.getElementById('visitFrequency').value = 'weekly';
-      document.getElementById('lastVisit').value = '';
-      document.getElementById('nextVisit').value = '';
-      document.getElementById('hasDisplay').value = 'no';
-      document.getElementById('displayRent').value = '';
-      document.getElementById('termsConditions').value = '';
-      document.getElementById('remarks').value = '';
+      document.getElementById("vendorName").value = "";
+      document.getElementById("contactPerson").value = "";
+      document.getElementById("phoneNumber").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("paymentTerms").value = "advance";
+      document.getElementById("visitFrequency").value = "weekly";
+      document.getElementById("lastVisit").value = "";
+      document.getElementById("nextVisit").value = "";
+      document.getElementById("hasDisplay").value = "no";
+      document.getElementById("displayRent").value = "";
+      document.getElementById("termsConditions").value = "";
+      document.getElementById("remarks").value = "";
     }
 
     function updateVendorDropdowns() {
-      const selects = ['brandVendor', 'issueVendor'];
-      selects.forEach(selectId => {
+      const selects = ["brandVendor", "issueVendor", "invoiceVendor"];
+      selects.forEach((selectId) => {
         const select = document.getElementById(selectId);
         if (select) {
           select.innerHTML = '<option value="">Choose a vendor...</option>';
-          vendors.forEach(vendor => {
-            const option = document.createElement('option');
+          vendors.forEach((vendor) => {
+            const option = document.createElement("option");
             option.value = vendor.id;
             option.textContent = vendor.name;
             select.appendChild(option);
           });
         }
       });
+
+      // Also update brand filters when vendors change
+      updateBrandFilters();
+    }
+
+    function clearBrandSearch() {
+      document.getElementById("brandSearchInput").value = "";
+      document.getElementById("brandVendorFilter").value = "";
+      document.getElementById("brandCategoryFilter").value = "";
+      updateBrandTable();
     }
 
     function updateVendorTable() {
-      const tbody = document.getElementById('vendorTableBody');
-      tbody.innerHTML = '';
-      vendors.forEach(vendor => {
-        const pendingIssues = issues.filter(issue => issue.vendorId === vendor.id && issue.status === 'pending');
-        const row = document.createElement('tr');
+      const tbody = document.getElementById("vendorTableBody");
+      if (!tbody) {
+        console.error("vendorTableBody not found");
+        return;
+      }
+      tbody.innerHTML = "";
+      console.log("Updating vendor table with", vendors.length, "vendors");
+      vendors.forEach((vendor) => {
+        // Debug logging to see the actual vendor data structure
+        console.log("Processing vendor:", vendor);
+
+        const pendingIssues = issues.filter(
+          (issue) =>
+            (issue.vendorId || issue.vendor_id) == vendor.id && issue.status === "pending"
+        );
+
+        // Get last invoice info
+        const lastInvoice = invoicePayments
+          .filter((inv) => (inv.vendorId || inv.vendor_id) == vendor.id)
+          .sort(
+            (a, b) => new Date(b.invoiceDate || b.invoice_date || b.created_at) - new Date(a.invoiceDate || a.invoice_date || a.created_at)
+          )[0];
+
+        const lastInvoiceInfo = lastInvoice
+          ? `${lastInvoice.invoiceNumber || lastInvoice.invoice_number || "Unknown"} (₹${lastInvoice.invoiceAmount || lastInvoice.invoice_amount || 0})`
+          : "No invoices";
+
+        const paymentStatus = lastInvoice
+          ? `<span class="payment-status ${lastInvoice.paymentStatus || lastInvoice.payment_status || "pending"
+          }">${(lastInvoice.paymentStatus || lastInvoice.payment_status || "pending")?.toUpperCase()}</span>`
+          : '<span class="payment-status pending">NO DATA</span>';
+
+        const row = document.createElement("tr");
         row.innerHTML = `
-                    <td>${vendor.name}</td>
-                    <td>${vendor.contactPerson || '-'}</td>
-                    <td>${vendor.phone || '-'}</td>
-                    <td>${vendor.paymentTerms}</td>
-                    <td>${vendor.visitFrequency}</td>
-                    <td>${vendor.lastVisit || '-'}</td>
-                    <td>${vendor.nextVisit || '-'}</td>
-                    <td>₹${vendor.displayRent}</td>
-                    <td><span style="background: ${pendingIssues.length > 0 ? '#ffebee' : '#e8f5e8'}; color: ${pendingIssues.length > 0 ? '#c62828' : '#2e7d32'}; padding: 4px 8px; border-radius: 4px; font-weight: 600;">${pendingIssues.length}</span></td>
-                    <td><button class="btn btn-danger" onclick="removeVendor(${vendor.id})" style="padding: 5px 10px; font-size: 0.8rem;">Remove</button></td>
+                    <td>
+                      <button class="btn btn-sm btn-info" onclick="toggleVendorDetails(${vendor.id})" style="margin-right: 8px;">📋</button>
+                      ${vendor.name || vendor.vendor_name || "Unnamed"}
+                    </td>
+                    <td>${vendor.contactPerson || vendor.contact_person || vendor.contactperson || "-"}</td>
+                    <td>${vendor.phone || vendor.phone_number || "-"}</td>
+                    <td>${vendor.paymentTerms || vendor.payment_terms || vendor.paymentterms || "-"}</td>
+                    <td>${lastInvoiceInfo}</td>
+                    <td>${paymentStatus}</td>
+                    <td>₹${vendor.displayRent || vendor.display_rent || vendor.displayrent || 0}</td>
+                    <td><span style="background: ${pendingIssues.length > 0 ? "#ffebee" : "#e8f5e8"
+          }; color: ${pendingIssues.length > 0 ? "#c62828" : "#2e7d32"
+          }; padding: 4px 8px; border-radius: 4px; font-weight: 600;">${pendingIssues.length
+          }</span></td>
+                    <td><button class="btn btn-danger" onclick="removeVendor(${vendor.id
+          })" style="padding: 5px 10px; font-size: 0.8rem;">Remove</button></td>
                 `;
         tbody.appendChild(row);
+
+        // Add expandable details row
+        const detailsRow = document.createElement("tr");
+        detailsRow.id = `vendor-details-${vendor.id}`;
+        detailsRow.className = "vendor-details-row";
+        detailsRow.style.display = "none";
+        detailsRow.innerHTML = `
+          <td colspan="9">
+            <div class="vendor-details-content" style="padding: 20px; background: #f8f9fa; border-radius: 8px; margin: 10px 0;">
+              <h4>📋 Complete Vendor Details</h4>
+              <div class="details-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                  <h5>📞 Contact Information</h5>
+                  <p><strong>Email:</strong> ${vendor.email || "-"}</p>
+                  <p><strong>Visit Frequency:</strong> ${vendor.visitFrequency || vendor.visit_frequency || "-"}</p>
+                  <p><strong>Last Visit:</strong> ${vendor.lastVisit || vendor.last_visit ? new Date(vendor.lastVisit || vendor.last_visit).toLocaleDateString() : "-"}</p>
+                  <p><strong>Next Visit:</strong> ${vendor.nextVisit || vendor.next_visit ? new Date(vendor.nextVisit || vendor.next_visit).toLocaleDateString() : "-"}</p>
+                  <p><strong>Display Space:</strong> ${vendor.hasDisplay || vendor.has_display || "no"}</p>
+                  <p><strong>Display Rent:</strong> ₹${vendor.displayRent || vendor.display_rent || 0}/month</p>
+                </div>
+                <div>
+                  <h5>📝 Notes & Remarks</h5>
+                  <p><strong>Terms & Conditions:</strong></p>
+                  <div style="background: white; padding: 10px; border-radius: 4px; border: 1px solid #ddd; max-height: 100px; overflow-y: auto;">
+                    ${vendor.termsConditions || vendor.terms_conditions || "No terms specified"}
+                  </div>
+                  <p style="margin-top: 10px;"><strong>Remarks:</strong></p>
+                  <div style="background: white; padding: 10px; border-radius: 4px; border: 1px solid #ddd; max-height: 100px; overflow-y: auto;">
+                    ${vendor.remarks || "No remarks"}
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top: 20px;">
+                <h5>📊 Recent Activity</h5>
+                <p><strong>Total Invoices:</strong> ${invoicePayments.filter(inv => (inv.vendorId || inv.vendor_id) == vendor.id).length}</p>
+                <p><strong>Total Issues:</strong> ${issues.filter(issue => (issue.vendorId || issue.vendor_id) == vendor.id).length}</p>
+                <p><strong>Total Brands:</strong> ${brands.filter(brand => (brand.vendorId || brand.vendor_id) == vendor.id).length}</p>
+              </div>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(detailsRow);
       });
     }
 
+    function toggleVendorDetails(vendorId) {
+      const detailsRow = document.getElementById(`vendor-details-${vendorId}`);
+      if (detailsRow) {
+        const isVisible = detailsRow.style.display !== "none";
+        detailsRow.style.display = isVisible ? "none" : "table-row";
+
+        // Update button text
+        const button = event.target;
+        button.textContent = isVisible ? "📋" : "📋";
+        button.className = isVisible ? "btn btn-sm btn-info" : "btn btn-sm btn-success";
+      }
+    }
+
     async function removeVendor(vendorId) {
-      if (confirm('Remove vendor and all associated data?')) {
+      if (confirm("Remove vendor and all associated data?")) {
         try {
-          await apiCall(`/api/vendors/${vendorId}`, 'DELETE');
-          vendors = vendors.filter(v => v.id !== vendorId);
-          brands = brands.filter(b => b.vendorId !== vendorId);
-          issues = issues.filter(i => i.vendorId !== vendorId);
-          updateAllTables();
-          updateDataStatus();
-          alert('✅ Vendor removed and database updated!');
+          const result = await apiCall(`/api/vendors/${vendorId}`, "DELETE");
+          if (result.success) {
+            vendors = vendors.filter((v) => v.id != vendorId);
+            brands = brands.filter((b) => (b.vendorId || b.vendor_id) != vendorId);
+            issues = issues.filter((i) => (i.vendorId || i.vendor_id) != vendorId);
+            invoicePayments = invoicePayments.filter(
+              (inv) => (inv.vendorId || inv.vendor_id) != vendorId
+            );
+            updateAllTables();
+            updateDataStatus();
+            alert("✅ Vendor removed and database.json updated!");
+          } else {
+            throw new Error(result.error || "Unknown error");
+          }
         } catch (error) {
-          alert('❌ Failed to remove vendor');
+          console.error("Failed to remove vendor:", error);
+          alert("❌ Failed to remove vendor: " + error.message);
         }
       }
     }
 
-    async function addBrand() {
-      const brandData = {
-        vendorId: parseInt(document.getElementById('brandVendor').value),
-        name: document.getElementById('brandName').value,
-        sku: document.getElementById('brandSKU').value,
-        category: document.getElementById('brandCategory').value
+    async function createInvoice(event) {
+      // Prevent any default form submission behavior
+      if (event) event.preventDefault();
+
+      const invoiceData = {
+        vendorId: parseInt(document.getElementById("invoiceVendor").value),
+        invoiceNumber: document.getElementById("invoiceNumber").value,
+        invoiceDate: document.getElementById("invoiceDate").value,
+        invoiceAmount: parseFloat(
+          document.getElementById("invoiceAmount").value
+        ),
+        totalItems:
+          parseInt(document.getElementById("totalItems").value) || 0,
+        dueDate: document.getElementById("dueDate").value || null, // Handle empty string properly
       };
 
-      if (!brandData.vendorId || !brandData.name) {
-        alert('Please select vendor and enter brand/product name');
+      if (
+        !invoiceData.vendorId ||
+        !invoiceData.invoiceNumber ||
+        !invoiceData.invoiceDate ||
+        !invoiceData.invoiceAmount
+      ) {
+        alert(
+          "Please fill all required fields (Vendor, Invoice Number, Date, and Amount)"
+        );
         return;
       }
 
       try {
-        const result = await apiCall('/api/brands', 'POST', brandData);
+        const result = await apiCall("/api/invoices", "POST", invoiceData);
+        if (result.success) {
+          // Reload data to get updated invoice list
+          await loadData();
+          updateInvoiceDropdown();
+          clearInvoiceForm();
+
+          alert("✅ Invoice created successfully!");
+        } else {
+          throw new Error(result.error || "Unknown error");
+        }
+      } catch (error) {
+        console.error("Failed to create invoice:", error);
+        alert("❌ Failed to create invoice: " + error.message);
+      }
+    }
+
+    async function recordPayment(event) {
+      // Prevent any default form submission behavior
+      if (event) event.preventDefault();
+
+      const paymentData = {
+        invoiceId: parseInt(document.getElementById("paymentInvoice").value),
+        paymentAmount: parseFloat(
+          document.getElementById("paymentAmount").value
+        ),
+        paymentMethod: document.getElementById("paymentMethod").value,
+        paymentDate: document.getElementById("paymentDate").value,
+        chequeNumber: document.getElementById("chequeNumber").value,
+        chequeDate: document.getElementById("chequeDate").value,
+        notes: document.getElementById("paymentNotes").value,
+      };
+
+      // Find the invoice to get vendor ID
+      const invoice = invoicePayments.find(
+        (inv) => inv.id == paymentData.invoiceId
+      );
+      if (invoice) {
+        paymentData.vendorId = invoice.vendorId || invoice.vendor_id;
+      }
+
+      if (
+        !paymentData.invoiceId ||
+        !paymentData.paymentAmount ||
+        !paymentData.paymentMethod ||
+        !paymentData.paymentDate
+      ) {
+        alert(
+          "Please fill all required fields (Invoice, Amount, Method, and Date)"
+        );
+        return;
+      }
+
+      try {
+        const result = await apiCall("/api/payments", "POST", paymentData);
+        if (result.success) {
+          // Reload data to get updated payment information
+          await loadData();
+          clearPaymentForm();
+          alert("✅ Payment recorded successfully!");
+        } else {
+          throw new Error(result.error || "Unknown error");
+        }
+      } catch (error) {
+        console.error("Failed to record payment:", error);
+        alert("❌ Failed to record payment: " + error.message);
+      }
+    }
+
+    function clearInvoiceForm() {
+      document.getElementById("invoiceVendor").value = "";
+      document.getElementById("invoiceNumber").value = "";
+      document.getElementById("invoiceDate").value = "";
+      document.getElementById("invoiceAmount").value = "";
+      document.getElementById("totalItems").value = "";
+      document.getElementById("dueDate").value = "";
+    }
+
+    function clearPaymentForm() {
+      document.getElementById("paymentInvoice").value = "";
+      document.getElementById("paymentAmount").value = "";
+      document.getElementById("paymentMethod").value = "";
+      document.getElementById("paymentDate").value = "";
+      document.getElementById("chequeNumber").value = "";
+      document.getElementById("chequeDate").value = "";
+      document.getElementById("paymentNotes").value = "";
+    }
+
+    // Credit Note Functions
+    async function createCreditNote(event) {
+      // Prevent any default form submission behavior
+      if (event) event.preventDefault();
+
+      const creditNoteData = {
+        invoiceId: parseInt(
+          document.getElementById("creditNoteInvoice").value
+        ),
+        crnNumber: document.getElementById("crnNumber").value,
+        creditDate: document.getElementById("creditDate").value,
+        creditAmount: parseFloat(
+          document.getElementById("creditAmount").value
+        ),
+        itemsReturned:
+          parseInt(document.getElementById("itemsReturned").value) || 0,
+        returnReason: document.getElementById("returnReason").value,
+        description: document.getElementById("creditNoteDescription").value,
+      };
+
+      // Find the invoice to get vendor ID
+      const invoice = invoicePayments.find(
+        (inv) => inv.id == creditNoteData.invoiceId
+      );
+      if (invoice) {
+        creditNoteData.vendorId = invoice.vendorId || invoice.vendor_id;
+      }
+
+      if (
+        !creditNoteData.invoiceId ||
+        !creditNoteData.crnNumber ||
+        !creditNoteData.creditDate ||
+        !creditNoteData.creditAmount
+      ) {
+        alert("Please fill all required fields");
+        return;
+      }
+
+      try {
+        const result = await apiCall(
+          "/api/credit-notes",
+          "POST",
+          creditNoteData
+        );
+        if (result.success) {
+          await loadData();
+          clearCreditNoteForm();
+          alert("✅ Credit note created successfully!");
+        } else {
+          throw new Error(result.error || "Unknown error");
+        }
+      } catch (error) {
+        console.error("Failed to create credit note:", error);
+        alert("❌ Failed to create credit note: " + error.message);
+      }
+    }
+
+    function clearCreditNoteForm() {
+      document.getElementById("creditNoteInvoice").value = "";
+      document.getElementById("crnNumber").value = "";
+      document.getElementById("creditDate").value = "";
+      document.getElementById("creditAmount").value = "";
+      document.getElementById("itemsReturned").value = "";
+      document.getElementById("returnReason").value = "";
+      document.getElementById("creditNoteDescription").value = "";
+    }
+
+    // Issue Items Management Functions
+    let issueItemCounter = 0;
+
+    function addIssueItem() {
+      const container = document.getElementById("issueItemsList");
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "issue-item";
+      itemDiv.style.border = "1px solid #ddd";
+      itemDiv.style.padding = "15px";
+      itemDiv.style.margin = "10px 0";
+      itemDiv.style.borderRadius = "5px";
+      itemDiv.style.backgroundColor = "#f9f9f9";
+
+      itemDiv.innerHTML = `
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Product Name*</label>
+              <input type="text" id="issueProductName_${issueItemCounter}" placeholder="e.g., Maggi Noodles 70g" required />
+            </div>
+            <div class="form-group">
+              <label>Quantity*</label>
+              <input type="number" id="issueQuantity_${issueItemCounter}" placeholder="Number of items" min="1" required onchange="calculateIssueItemTotal(${issueItemCounter})" />
+            </div>
+            <div class="form-group">
+              <label>Unit Price (₹)*</label>
+              <input type="number" id="issueUnitPrice_${issueItemCounter}" placeholder="Price per item" step="0.01" min="0" required onchange="calculateIssueItemTotal(${issueItemCounter})" />
+            </div>
+            <div class="form-group">
+              <label>Total Price (₹)</label>
+              <input type="number" id="issueTotalPrice_${issueItemCounter}" placeholder="Auto-calculated" readonly />
+            </div>
+            <div class="form-group">
+              <label>Issue Type*</label>
+              <select id="issueIssueType_${issueItemCounter}" required>
+                <option value="">Select issue...</option>
+                <option value="expired">Expired</option>
+                <option value="damaged">Damaged</option>
+                <option value="defective">Defective</option>
+                <option value="wrong_delivery">Wrong Product Delivered</option>
+                <option value="poor_quality">Poor Quality</option>
+                <option value="short_delivery">Short Delivery</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="issueItemDescription_${issueItemCounter}" placeholder="Details about the issue"></textarea>
+            </div>
+          </div>
+          <button type="button" class="btn btn-danger" onclick="removeIssueItem(this)" style="margin-top: 10px;">
+            🗑️ Remove Item
+          </button>
+        `;
+
+      container.appendChild(itemDiv);
+      issueItemCounter++;
+    }
+
+    function calculateIssueItemTotal(index) {
+      const quantity =
+        parseFloat(document.getElementById(`issueQuantity_${index}`).value) ||
+        0;
+      const unitPrice =
+        parseFloat(
+          document.getElementById(`issueUnitPrice_${index}`).value
+        ) || 0;
+      const totalPrice = quantity * unitPrice;
+      document.getElementById(`issueTotalPrice_${index}`).value =
+        totalPrice.toFixed(2);
+    }
+
+    function removeIssueItem(button) {
+      button.parentElement.remove();
+    }
+
+    async function createIssueItems(event) {
+      // Prevent any default form submission behavior
+      if (event) event.preventDefault();
+
+      const vendorId = parseInt(document.getElementById("issueVendor").value);
+      const issueDate = document.getElementById("issueDate").value;
+      const description = document.getElementById("issueDescription").value;
+
+      if (!vendorId || !issueDate) {
+        alert("Please fill all required fields (Vendor and Date Found)");
+        return;
+      }
+
+      // Collect issue items
+      const issueItems = [];
+      const itemDivs = document.querySelectorAll(".issue-item");
+
+      if (itemDivs.length === 0) {
+        alert("Please add at least one issue item");
+        return;
+      }
+
+      itemDivs.forEach((div) => {
+        // Find all input elements within this div
+        const productNameInput = div.querySelector(
+          'input[id^="issueProductName_"]'
+        );
+        const quantityInput = div.querySelector('input[id^="issueQuantity_"]');
+        const unitPriceInput = div.querySelector(
+          'input[id^="issueUnitPrice_"]'
+        );
+        const totalPriceInput = div.querySelector(
+          'input[id^="issueTotalPrice_"]'
+        );
+        const issueTypeSelect = div.querySelector(
+          'select[id^="issueIssueType_"]'
+        );
+        const descriptionTextarea = div.querySelector(
+          'textarea[id^="issueItemDescription_"]'
+        );
+
+        const productName = productNameInput?.value?.trim();
+        const quantity = parseInt(quantityInput?.value) || 0;
+        const unitPrice = parseFloat(unitPriceInput?.value) || 0;
+        const totalPrice = quantity * unitPrice; // Calculate total price
+        const issueType = issueTypeSelect?.value;
+        const itemDescription = descriptionTextarea?.value?.trim();
+
+        // Update total price field
+        if (totalPriceInput) {
+          totalPriceInput.value = totalPrice.toFixed(2);
+        }
+
+        // Validate required fields
+        if (!productName) {
+          alert("Please enter Product Name for all items");
+          return;
+        }
+        if (!quantity || quantity <= 0) {
+          alert(
+            "Please enter a valid Quantity (greater than 0) for all items"
+          );
+          return;
+        }
+        if (!unitPrice || unitPrice <= 0) {
+          alert(
+            "Please enter a valid Unit Price (greater than 0) for all items"
+          );
+          return;
+        }
+        if (!issueType) {
+          alert("Please select Issue Type for all items");
+          return;
+        }
+
+        issueItems.push({
+          productName,
+          quantity,
+          unitPrice,
+          totalPrice,
+          issue: issueType,
+          description: itemDescription,
+        });
+      });
+
+      if (issueItems.length === 0) {
+        alert("Please fill all required fields for issue items");
+        return;
+      }
+
+      // Create individual issue records for each item
+      const promises = issueItems.map(async (item) => {
+        const issueData = {
+          vendorId,
+          productName: item.productName,
+          issueType: item.issue,
+          quantity: item.quantity,
+          dateFound: issueDate,
+          estimatedLoss: item.totalPrice,
+          description: item.description || description,
+        };
+
+        return await apiCall("/api/issues", "POST", issueData);
+      });
+
+      try {
+        const results = await Promise.all(promises);
+        const successCount = results.filter((r) => r.success).length;
+
+        if (successCount === issueItems.length) {
+          await loadData();
+          clearIssueForm();
+          alert(`✅ ${successCount} issue items created successfully!`);
+        } else {
+          throw new Error(
+            `Only ${successCount} out of ${issueItems.length} items were created`
+          );
+        }
+      } catch (error) {
+        console.error("Failed to create issue items:", error);
+        alert("❌ Failed to create issue items: " + error.message);
+      }
+    }
+
+    function updateInvoiceDropdown() {
+      const select = document.getElementById("paymentInvoice");
+      if (select) {
+        select.innerHTML = '<option value="">Choose an invoice...</option>';
+        invoicePayments.forEach((invoice) => {
+          const vendorId = invoice.vendorId || invoice.vendor_id;
+          const vendor = vendors.find((v) => v.id == vendorId);
+          const vendorName = vendor ? (vendor.name || vendor.vendor_name || "Unknown") : "Unknown";
+          const outstanding =
+            invoice.outstanding ||
+            (invoice.invoiceAmount || invoice.invoice_amount || 0) - (invoice.paymentAmount || invoice.payment_amount || 0);
+          const option = document.createElement("option");
+          option.value = invoice.id;
+          option.textContent = `${invoice.invoiceNumber || invoice.invoice_number || "Unknown"} - ${vendorName} (₹${outstanding} outstanding)`;
+          select.appendChild(option);
+        });
+      }
+    }
+
+    function updateCreditNoteDropdown() {
+      const select = document.getElementById("creditNoteInvoice");
+      if (select) {
+        select.innerHTML = '<option value="">Choose an invoice...</option>';
+        invoicePayments.forEach((invoice) => {
+          const vendor = vendors.find((v) => v.id === invoice.vendorId);
+          const vendorName = vendor ? vendor.name : "Unknown";
+          const outstanding =
+            invoice.outstanding ||
+            invoice.invoiceAmount - (invoice.paymentAmount || 0);
+          const option = document.createElement("option");
+          option.value = invoice.id;
+          option.textContent = `${invoice.invoiceNumber} - ${vendorName} (₹${outstanding} outstanding)`;
+          select.appendChild(option);
+        });
+      }
+    }
+
+    function updateInvoiceTable() {
+      const tbody = document.getElementById("invoiceTableBody");
+      if (!tbody) {
+        console.error("invoiceTableBody not found");
+        return;
+      }
+      tbody.innerHTML = "";
+      console.log("Updating invoice table with", invoicePayments.length, "invoices");
+
+      const sortedInvoices = [...invoicePayments].sort(
+        (a, b) => new Date(b.invoiceDate || b.invoice_date) - new Date(a.invoiceDate || a.invoice_date)
+      );
+
+      sortedInvoices.forEach((invoice) => {
+        // Debug logging to see the actual invoice data structure
+        console.log("Processing invoice:", invoice);
+
+        const vendorId = invoice.vendorId || invoice.vendor_id;
+        const vendor = vendors.find((v) => v.id == vendorId);
+        const totalPaid = invoice.paymentAmount || invoice.payment_amount || 0;
+        const totalCredits = invoice.totalCredits || invoice.total_credits || 0;
+        const outstanding =
+          invoice.outstanding ||
+          (invoice.invoiceAmount || invoice.invoice_amount || 0) - totalCredits - totalPaid;
+        const paymentCount = (invoice.payments || invoice.payment_records || []).length;
+        const creditCount = (invoice.creditNotes || invoice.credit_notes || []).length;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+                     <td>
+                       <button class="btn btn-sm btn-info" onclick="toggleInvoiceDetails(${invoice.id})" style="margin-right: 8px;">📋</button>
+                       ${vendor ? (vendor.name || vendor.vendor_name || "Unknown") : "Unknown"}
+                     </td>
+                     <td><strong>${invoice.invoiceNumber || invoice.invoice_number || "Unknown"}</strong></td>
+                     <td>${(invoice.invoiceDate || invoice.invoice_date) ? new Date(invoice.invoiceDate || invoice.invoice_date).toLocaleString('en-US', dateFormatOptions) : 'Invalid Date'}</td>
+                     <td>₹${invoice.invoiceAmount || invoice.invoice_amount || 0}</td>
+                     <td>₹${totalPaid}</td>
+                     <td>₹${totalCredits}</td>
+                     <td>₹${outstanding}</td>
+                     <td><span class="payment-status ${invoice.paymentStatus || invoice.payment_status || "pending"
+          }">${(invoice.paymentStatus || invoice.payment_status || "pending")?.toUpperCase()}</span></td>
+                     <td>${(invoice.dueDate || invoice.due_date) ? new Date(invoice.dueDate || invoice.due_date).toLocaleString('en-US', dateFormatOptions) : "-"}</td>
+                     <td>
+                       <button class="btn btn-success" onclick="viewPayments(${invoice.id
+          })" style="padding: 5px 8px; font-size: 0.8rem; margin-right: 3px;">${paymentCount} Payments</button>
+                       <button class="btn btn-warning" onclick="viewCreditNotes(${invoice.id
+          })" style="padding: 5px 8px; font-size: 0.8rem; margin-right: 3px;">${creditCount} Credits</button>
+                       <button class="btn btn-danger" onclick="deleteInvoice(${invoice.id
+          })" style="padding: 5px 8px; font-size: 0.8rem;">Delete</button>
+                     </td>
+                 `;
+        tbody.appendChild(row);
+
+        // Add expandable details row
+        const detailsRow = document.createElement("tr");
+        detailsRow.id = `invoice-details-${invoice.id}`;
+        detailsRow.className = "invoice-details-row";
+        detailsRow.style.display = "none";
+        detailsRow.innerHTML = `
+          <td colspan="10">
+            <div class="invoice-details-content" style="padding: 20px; background: #f8f9fa; border-radius: 8px; margin: 10px 0;">
+              <h4>📋 Complete Invoice Details</h4>
+              <div class="details-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                  <h5>💰 Payment Details</h5>
+                  <p><strong>Total Paid:</strong> ₹${totalPaid}</p>
+                  <p><strong>Total Credits:</strong> ₹${totalCredits}</p>
+                  <p><strong>Outstanding:</strong> ₹${outstanding}</p>
+                  <p><strong>Payment Status:</strong> <span class="payment-status ${invoice.paymentStatus || invoice.payment_status || "pending"}">${(invoice.paymentStatus || invoice.payment_status || "pending")?.toUpperCase()}</span></p>
+                  <p><strong>Total Items:</strong> ${invoice.totalItems || invoice.total_items || 0}</p>
+                </div>
+                <div>
+                  <h5>📝 Notes & Remarks</h5>
+                  <p><strong>Payment Notes:</strong></p>
+                  <div style="background: white; padding: 10px; border-radius: 4px; border: 1px solid #ddd; max-height: 100px; overflow-y: auto;">
+                    ${(invoice.payments && invoice.payments.length > 0) ? invoice.payments.map(p => p.notes || p.payment_notes || "").filter(n => n).join(", ") || "No payment notes" : "No payment notes"}
+                  </div>
+                  <p style="margin-top: 10px;"><strong>Credit Note Details:</strong></p>
+                  <div style="background: white; padding: 10px; border-radius: 4px; border: 1px solid #ddd; max-height: 100px; overflow-y: auto;">
+                    ${(invoice.creditNotes && invoice.creditNotes.length > 0) ? invoice.creditNotes.map(c => c.description || c.return_reason || "").filter(d => d).join(", ") || "No credit notes" : "No credit notes"}
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top: 20px;">
+                <h5>📊 Summary</h5>
+                <p><strong>Payment Count:</strong> ${paymentCount}</p>
+                <p><strong>Credit Count:</strong> ${creditCount}</p>
+                <p><strong>Days Since Invoice:</strong> ${Math.ceil((new Date() - new Date(invoice.invoiceDate || invoice.invoice_date)) / (1000 * 60 * 60 * 24))}</p>
+              </div>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(detailsRow);
+      });
+    }
+
+    function toggleInvoiceDetails(invoiceId) {
+      const detailsRow = document.getElementById(`invoice-details-${invoiceId}`);
+      if (detailsRow) {
+        const isVisible = detailsRow.style.display !== "none";
+        detailsRow.style.display = isVisible ? "none" : "table-row";
+
+        // Update button text
+        const button = event.target;
+        button.textContent = isVisible ? "📋" : "📋";
+        button.className = isVisible ? "btn btn-sm btn-info" : "btn btn-sm btn-success";
+      }
+    }
+
+    function viewPayments(invoiceId) {
+      console.log("Looking for invoice with ID:", invoiceId, "Type:", typeof invoiceId);
+      console.log("Available invoices:", invoicePayments.map(inv => ({id: inv.id, type: typeof inv.id})));
+
+      const invoice = invoicePayments.find((inv) => inv.id == invoiceId);
+      if (!invoice) {
+        alert(`Invoice not found! ID: ${invoiceId}`);
+        return;
+      }
+
+      // Debug logging to see the actual invoice structure
+      console.log("Viewing payments for invoice:", invoice);
+
+      const vendorId = invoice.vendorId || invoice.vendor_id;
+      const vendor = vendors.find((v) => v.id == vendorId);
+      const vendorName = vendor ? (vendor.name || vendor.vendor_name || "Unknown") : "Unknown";
+
+      let paymentHistory = `📋 Payment History for Invoice: ${invoice.invoiceNumber || invoice.invoice_number || "Unknown"}\n`;
+      paymentHistory += `🏢 Vendor: ${vendorName}\n`;
+      paymentHistory += `💰 Invoice Amount: ₹${invoice.invoiceAmount || invoice.invoice_amount || 0}\n`;
+      paymentHistory += `💳 Total Paid: ₹${invoice.paymentAmount || invoice.payment_amount || 0}\n`;
+      paymentHistory += `⏳ Outstanding: ₹${invoice.outstanding ||
+        (invoice.invoiceAmount || invoice.invoice_amount || 0) - (invoice.paymentAmount || invoice.payment_amount || 0)
+        }\n\n`;
+
+      // Check for payments array in different possible locations
+      const payments = invoice.payments || invoice.payment_records || invoice.payment_records || [];
+
+      if (payments && payments.length > 0) {
+        paymentHistory += "💸 Payment Records:\n";
+        payments
+          .sort((a, b) => {
+            // Try to find a valid date for sorting, fallback to current date if none found
+            const dateA = a.paymentDate || a.payment_date || a.created_at || a.date || new Date();
+            const dateB = b.paymentDate || b.payment_date || b.created_at || b.date || new Date();
+            return new Date(dateB) - new Date(dateA);
+          })
+          .forEach((payment, index) => {
+            // Debug logging to see the actual payment structure
+            console.log("Processing payment:", payment);
+            console.log("Available payment fields:", Object.keys(payment));
+
+            // Use the exact field names from the payment object
+            const paymentDate = payment.paymentDate;
+            const paymentAmount = payment.paymentAmount || 0;
+            const paymentMethod = payment.paymentMethod || "Unknown";
+            const chequeNumber = payment.chequeNumber || "";
+            const notes = payment.notes || "";
+
+            // Better date handling with fallback
+            let formattedDate = "No Date Available";
+            if (paymentDate && paymentDate !== "" && paymentDate !== null) {
+              try {
+                const dateObj = new Date(paymentDate);
+                if (!isNaN(dateObj.getTime())) {
+                  formattedDate = dateObj.toLocaleString('en-US', dateFormatOptions);
+                } else {
+                  console.warn("Invalid date:", paymentDate);
+                  formattedDate = "Invalid Date";
+                }
+              } catch (error) {
+                console.error("Error formatting date:", paymentDate, error);
+                formattedDate = "Date Error";
+              }
+            } else {
+              // Try to use invoice date as fallback
+              const invoiceDate = invoice.invoiceDate || invoice.invoice_date;
+              if (invoiceDate) {
+                try {
+                  const dateObj = new Date(invoiceDate);
+                  if (!isNaN(dateObj.getTime())) {
+                    formattedDate = `Invoice Date: ${dateObj.toLocaleString('en-US', dateFormatOptions)}`;
+                  }
+                } catch (error) {
+                  console.error("Error formatting invoice date:", invoiceDate, error);
+                }
+              } else {
+                formattedDate = "Date Not Available";
+              }
+            }
+
+            paymentHistory += `\n${index + 1}. Date: ${formattedDate}\n`;
+            paymentHistory += `   Amount: ₹${paymentAmount}\n`;
+            paymentHistory += `   Method: ${paymentMethod}\n`;
+            if (chequeNumber && chequeNumber !== "") {
+              paymentHistory += `   Cheque: ${chequeNumber}\n`;
+            }
+            if (notes && notes !== "") {
+              paymentHistory += `   Notes: ${notes}\n`;
+            }
+          });
+      } else {
+        paymentHistory += "No payments recorded yet.";
+      }
+
+      // Add a note about missing dates if any payments don't have dates
+      const paymentsWithoutDates = payments.filter(p => !p.paymentDate || p.paymentDate === "" || p.paymentDate === null);
+      if (paymentsWithoutDates.length > 0) {
+        paymentHistory += `\n\n⚠️ Note: ${paymentsWithoutDates.length} payment(s) are missing date information.`;
+        paymentHistory += `\nThe system will show the invoice date instead.`;
+        paymentHistory += `\nTo fix this, ensure payment dates are recorded when creating payments.`;
+      }
+
+      alert(paymentHistory);
+    }
+
+    function viewCreditNotes(invoiceId) {
+      console.log("Looking for invoice with ID:", invoiceId, "Type:", typeof invoiceId);
+      console.log("Available invoices:", invoicePayments.map(inv => ({id: inv.id, type: typeof inv.id})));
+
+      const invoice = invoicePayments.find((inv) => inv.id == invoiceId);
+      if (!invoice) {
+        alert(`Invoice not found! ID: ${invoiceId}`);
+        return;
+      }
+
+      // Debug logging to see the actual invoice structure
+      console.log("Viewing credit notes for invoice:", invoice);
+
+      const vendorId = invoice.vendorId || invoice.vendor_id;
+      const vendor = vendors.find((v) => v.id == vendorId);
+      const vendorName = vendor ? (vendor.name || vendor.vendor_name || "Unknown") : "Unknown";
+
+      let creditHistory = `📝 Credit Note History for Invoice: ${invoice.invoiceNumber || invoice.invoice_number || "Unknown"}\n`;
+      creditHistory += `🏢 Vendor: ${vendorName}\n`;
+      creditHistory += `💰 Invoice Amount: ₹${invoice.invoiceAmount || invoice.invoice_amount || 0}\n`;
+      creditHistory += `💳 Total Credits: ₹${invoice.totalCredits || invoice.total_credits || 0}\n`;
+      creditHistory += `⏳ Outstanding: ₹${invoice.outstanding ||
+        (invoice.invoiceAmount || invoice.invoice_amount || 0) -
+        (invoice.totalCredits || invoice.total_credits || 0) -
+        (invoice.paymentAmount || invoice.payment_amount || 0)
+        }\n\n`;
+
+      // Check for credit notes array in different possible locations
+      const creditNotes = invoice.creditNotes || invoice.credit_notes || invoice.creditnotes || [];
+
+      if (creditNotes && creditNotes.length > 0) {
+        creditHistory += "📋 Credit Note Records:\n";
+        creditNotes
+          .sort((a, b) => new Date(b.creditDate || b.credit_date || b.created_at) - new Date(a.creditDate || a.credit_date || a.created_at))
+          .forEach((creditNote, index) => {
+            const crnNumber = creditNote.crnNumber || creditNote.crn_number || creditNote.crn || `CRN-${index + 1}`;
+            const creditDate = creditNote.creditDate || creditNote.credit_date || creditNote.created_at;
+            const creditAmount = creditNote.creditAmount || creditNote.credit_amount || 0;
+            const itemsReturned = creditNote.itemsReturned || creditNote.items_returned || "N/A";
+            const returnReason = creditNote.returnReason || creditNote.return_reason || "N/A";
+            const status = creditNote.status || "Active";
+            const description = creditNote.description || creditNote.notes || "";
+
+            // Better date handling with fallback
+            let formattedCreditDate = "Unknown Date";
+            if (creditDate) {
+              try {
+                const dateObj = new Date(creditDate);
+                if (!isNaN(dateObj.getTime())) {
+                  formattedCreditDate = dateObj.toLocaleString('en-US', dateFormatOptions);
+                } else {
+                  console.warn("Invalid credit date:", creditDate);
+                }
+              } catch (error) {
+                console.error("Error formatting credit date:", creditDate, error);
+              }
+            }
+
+            creditHistory += `\n${index + 1}. CRN: ${crnNumber}\n`;
+            creditHistory += `   Date: ${formattedCreditDate}\n`;
+            creditHistory += `   Amount: ₹${creditAmount}\n`;
+            creditHistory += `   Items: ${itemsReturned}\n`;
+            creditHistory += `   Reason: ${returnReason}\n`;
+            creditHistory += `   Status: ${status}\n`;
+            if (description) {
+              creditHistory += `   Notes: ${description}\n`;
+            }
+
+            // Show returned items if available
+            if (
+              creditNote.returnedItems &&
+              creditNote.returnedItems.length > 0
+            ) {
+              creditHistory += `   Items:\n`;
+              creditNote.returnedItems.forEach((item, itemIndex) => {
+                const productName = item.productName || item.product_name || "Unknown Product";
+                const quantity = item.quantity || item.qty || 0;
+                const totalPrice = item.totalPrice || item.total_price || 0;
+                const issue = item.issue || item.issue_type || "N/A";
+                const itemDescription = item.description || "";
+
+                creditHistory += `     ${itemIndex + 1}. ${productName} - ${quantity} units (₹${totalPrice})\n`;
+                creditHistory += `        Issue: ${issue}${itemDescription ? ` - ${itemDescription}` : ""
+                  }\n`;
+              });
+            }
+          });
+      } else {
+        creditHistory += "No credit notes recorded yet.";
+      }
+
+      alert(creditHistory);
+    }
+
+    function editInvoice(invoiceId) {
+      const invoice = invoicePayments.find((inv) => inv.id === invoiceId);
+      if (!invoice) {
+        alert("Invoice not found!");
+        return;
+      }
+
+      // Scroll to invoice form
+      document
+        .getElementById("invoices")
+        .scrollIntoView({behavior: "smooth"});
+
+      // Fill the form with existing data
+      document.getElementById("invoiceVendor").value = invoice.vendorId;
+      document.getElementById("invoiceNumber").value = invoice.invoiceNumber;
+      document.getElementById("invoiceDate").value = invoice.invoiceDate;
+      document.getElementById("invoiceAmount").value = invoice.invoiceAmount;
+      document.getElementById("totalItems").value = invoice.totalItems || "";
+      document.getElementById("dueDate").value = invoice.dueDate || "";
+      document.getElementById("paymentStatus").value =
+        invoice.paymentStatus || "pending";
+      document.getElementById("paymentMethod").value =
+        invoice.paymentMethod || "";
+      document.getElementById("chequeNumber").value =
+        invoice.chequeNumber || "";
+      document.getElementById("chequeDate").value = invoice.chequeDate || "";
+      document.getElementById("paymentGivenDate").value =
+        invoice.paymentGivenDate || "";
+      document.getElementById("paymentAmount").value =
+        invoice.paymentAmount || "";
+      document.getElementById("paymentNotes").value =
+        invoice.paymentNotes || "";
+
+      // Change button text to indicate update mode
+      const submitBtn = document.querySelector(
+        'button[onclick="updateInvoicePayment()"]'
+      );
+      if (submitBtn) {
+        submitBtn.textContent = "Update Invoice & Payment";
+        submitBtn.style.background =
+          "linear-gradient(135deg, #f39c12, #e67e22)";
+      }
+
+      // Show notification
+      alert(
+        `📝 Editing Invoice: ${invoice.invoiceNumber}\n\nMake your changes and click "Update Invoice & Payment"`
+      );
+    }
+
+    async function deleteInvoice(invoiceId) {
+      const invoice = invoicePayments.find((inv) => inv.id == invoiceId);
+      if (!invoice) return;
+
+      if (
+        confirm(
+          `Delete Invoice ${invoice.invoiceNumber}?\n\nThis action cannot be undone.`
+        )
+      ) {
+        try {
+          const result = await apiCall(`/api/invoices/${invoiceId}`, "DELETE");
+          if (result.success) {
+            invoicePayments = invoicePayments.filter(
+              (inv) => inv.id != invoiceId
+            );
+            updateInvoiceTable();
+            updateVendorTable();
+            updateInvoiceSummary();
+            updateDataStatus();
+            alert("✅ Invoice deleted and database.json updated!");
+          } else {
+            throw new Error(result.error || "Unknown error");
+          }
+        } catch (error) {
+          console.error("Failed to delete invoice:", error);
+          alert("❌ Failed to delete invoice: " + error.message);
+        }
+      }
+    }
+
+    function updateInvoiceSummary() {
+      const totalOutstanding = invoicePayments
+        .filter(
+          (inv) =>
+            (inv.paymentStatus || inv.payment_status) === "pending" || (inv.paymentStatus || inv.payment_status) === "overdue"
+        )
+        .reduce((sum, inv) => sum + (inv.outstanding || 0), 0);
+
+      const pendingCount = invoicePayments.filter(
+        (inv) => (inv.paymentStatus || inv.payment_status) === "pending"
+      ).length;
+
+      const overdueCount = invoicePayments.filter(
+        (inv) => (inv.paymentStatus || inv.payment_status) === "overdue"
+      ).length;
+
+      const totalCredits = invoicePayments.reduce(
+        (sum, inv) => sum + (inv.totalCredits || inv.total_credits || 0),
+        0
+      );
+
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const thisMonthPaid = invoicePayments
+        .filter((inv) => {
+          const paymentDate = new Date(
+            inv.paymentGivenDate || inv.payment_given_date || inv.invoiceDate || inv.invoice_date
+          );
+          return (
+            (inv.paymentStatus || inv.payment_status) === "paid" &&
+            paymentDate.getMonth() === currentMonth &&
+            paymentDate.getFullYear() === currentYear
+          );
+        })
+        .reduce(
+          (sum, inv) => sum + (inv.paymentAmount || inv.payment_amount || inv.invoiceAmount || inv.invoice_amount || 0),
+          0
+        );
+
+      document.getElementById(
+        "totalOutstanding"
+      ).textContent = `₹${totalOutstanding}`;
+      document.getElementById("pendingPayments").textContent = pendingCount;
+      document.getElementById("overduePayments").textContent = overdueCount;
+      document.getElementById("totalCredits").textContent = `₹${totalCredits}`;
+      document.getElementById(
+        "thisMonthPaid"
+      ).textContent = `₹${thisMonthPaid}`;
+    }
+
+    async function addBrand(event) {
+      // Prevent any default form submission behavior
+      if (event) event.preventDefault();
+
+      const brandData = {
+        vendorId: parseInt(document.getElementById("brandVendor").value),
+        name: document.getElementById("brandName").value,
+        sku: document.getElementById("brandSKU").value,
+        category: document.getElementById("brandCategory").value,
+      };
+
+      if (!brandData.vendorId || !brandData.name) {
+        alert("Please select vendor and enter brand/product name");
+        return;
+      }
+
+      try {
+        const result = await apiCall("/api/brands", "POST", brandData);
         if (result.success) {
           brands.push(result.brand);
           updateBrandTable();
           clearBrandForm();
           updateDataStatus();
-          alert('✅ Brand added and saved automatically!');
+          alert("✅ Brand added and saved to database.json!");
+        } else {
+          throw new Error(result.error || "Unknown error");
         }
       } catch (error) {
-        alert('❌ Failed to add brand');
+        console.error("Failed to add brand:", error);
+        alert("❌ Failed to add brand: " + error.message);
       }
     }
 
     function clearBrandForm() {
-      document.getElementById('brandVendor').value = '';
-      document.getElementById('brandName').value = '';
-      document.getElementById('brandSKU').value = '';
-      document.getElementById('brandCategory').value = 'groceries';
+      document.getElementById("brandVendor").value = "";
+      document.getElementById("brandName").value = "";
+      document.getElementById("brandSKU").value = "";
+      document.getElementById("brandCategory").value = "groceries";
     }
 
     function updateBrandTable() {
-      const tbody = document.getElementById('brandTableBody');
-      tbody.innerHTML = '';
-      brands.forEach(brand => {
-        const vendor = vendors.find(v => v.id === brand.vendorId);
-        const row = document.createElement('tr');
+      const tbody = document.getElementById("brandTableBody");
+      if (!tbody) {
+        console.error("brandTableBody not found");
+        return;
+      }
+      tbody.innerHTML = "";
+      console.log("Updating brand table with", brands.length, "brands");
+
+      // Get search and filter values
+      const searchTerm = document.getElementById("brandSearchInput").value.toLowerCase();
+      const vendorFilter = document.getElementById("brandVendorFilter").value;
+      const categoryFilter = document.getElementById("brandCategoryFilter").value;
+
+      // Filter brands based on search and filters
+      const filteredBrands = brands.filter((brand) => {
+        const vendorId = brand.vendorId || brand.vendor_id;
+        const vendor = vendors.find((v) => v.id == vendorId);
+        const vendorName = vendor ? (vendor.name || vendor.vendor_name || "").toLowerCase() : "";
+        const brandName = (brand.name || brand.brand_name || brand.product_name || "").toLowerCase();
+        const category = (brand.category || brand.product_category || "").toLowerCase();
+
+        // Search term filter
+        const matchesSearch = !searchTerm ||
+          brandName.includes(searchTerm) ||
+          vendorName.includes(searchTerm) ||
+          category.includes(searchTerm) ||
+          (brand.sku && brand.sku.toLowerCase().includes(searchTerm));
+
+        // Vendor filter
+        const matchesVendor = !vendorFilter || brand.vendorId.toString() === vendorFilter;
+
+        // Category filter
+        const matchesCategory = !categoryFilter || brand.category === categoryFilter;
+
+        return matchesSearch && matchesVendor && matchesCategory;
+      });
+
+      // Display filtered brands
+      filteredBrands.forEach((brand) => {
+        // Debug logging to see the actual brand data structure
+        console.log("Processing brand:", brand);
+
+        const vendorId = brand.vendorId || brand.vendor_id;
+        const vendor = vendors.find((v) => v.id == vendorId);
+        const row = document.createElement("tr");
         row.innerHTML = `
-                    <td>${brand.name}</td>
-                    <td>${vendor ? vendor.name : 'Unknown'}</td>
-                    <td>${brand.category}</td>
-                    <td>${brand.sku || '-'}</td>
-                    <td>${brand.dateAdded}</td>
-                    <td><button class="btn btn-danger" onclick="removeBrand(${brand.id})" style="padding: 5px 10px; font-size: 0.8rem;">Remove</button></td>
+                    <td>${brand.name || brand.brand_name || brand.product_name || "Unnamed"}</td>
+                    <td>${vendor ? (vendor.name || vendor.vendor_name || "Unknown") : "Unknown"}</td>
+                    <td>${brand.category || brand.product_category || "Uncategorized"}</td>
+                    <td>${brand.sku || brand.product_code || "-"}</td>
+                    <td>${(brand.dateAdded || brand.date_added || brand.created_at) ? new Date(brand.dateAdded || brand.date_added || brand.created_at).toLocaleString('en-US', dateFormatOptions) : "Unknown"}</td>
+                    <td><button class="btn btn-danger" onclick="removeBrand(${brand.id
+          })" style="padding: 5px 10px; font-size: 0.8rem;">Remove</button></td>
                 `;
         tbody.appendChild(row);
+      });
+
+      // Update the table header to show filtered count
+      const tableHeader = document.querySelector("#brands h2");
+      if (filteredBrands.length !== brands.length) {
+        tableHeader.textContent = `Manage Vendor Brands/Products (${filteredBrands.length} of ${brands.length})`;
+      } else {
+        tableHeader.textContent = "Manage Vendor Brands/Products";
+      }
+    }
+
+    function updateBrandFilters() {
+      // Populate vendor filter dropdown
+      const vendorFilter = document.getElementById("brandVendorFilter");
+      vendorFilter.innerHTML = '<option value="">All Vendors</option>';
+
+      vendors.forEach((vendor) => {
+        const option = document.createElement("option");
+        option.value = vendor.id;
+        option.textContent = vendor.name;
+        vendorFilter.appendChild(option);
       });
     }
 
     async function removeBrand(brandId) {
-      if (confirm('Remove this brand/product?')) {
+      if (confirm("Remove this brand/product?")) {
         try {
-          await apiCall(`/api/brands/${brandId}`, 'DELETE');
-          brands = brands.filter(b => b.id !== brandId);
-          updateBrandTable();
-          updateDataStatus();
-          alert('✅ Brand removed and database updated!');
+          const result = await apiCall(`/api/brands/${brandId}`, "DELETE");
+          if (result.success) {
+            brands = brands.filter((b) => b.id != brandId);
+            updateBrandTable();
+            updateDataStatus();
+            alert("✅ Brand removed and database.json updated!");
+          } else {
+            throw new Error(result.error || "Unknown error");
+          }
         } catch (error) {
-          alert('❌ Failed to remove brand');
+          console.error("Failed to remove brand:", error);
+          alert("❌ Failed to remove brand: " + error.message);
         }
-      }
-    }
-
-    async function addIssue() {
-      const issueData = {
-        vendorId: parseInt(document.getElementById('issueVendor').value),
-        productName: document.getElementById('issueProduct').value,
-        issueType: document.getElementById('issueType').value,
-        quantity: parseInt(document.getElementById('issueQuantity').value) || 1,
-        dateFound: document.getElementById('issueDate').value || new Date().toISOString().split('T')[0],
-        estimatedLoss: parseFloat(document.getElementById('issueLoss').value) || 0,
-        description: document.getElementById('issueDescription').value
-      };
-
-      if (!issueData.vendorId || !issueData.productName || !issueData.issueType) {
-        alert('Please fill all required fields');
-        return;
-      }
-
-      try {
-        const result = await apiCall('/api/issues', 'POST', issueData);
-        if (result.success) {
-          issues.push(result.issue);
-          updateIssuesDisplay();
-          updateVendorTable();
-          clearIssueForm();
-          updateDataStatus();
-          alert('✅ Issue reported and saved automatically!');
-        }
-      } catch (error) {
-        alert('❌ Failed to report issue');
       }
     }
 
     function clearIssueForm() {
-      document.getElementById('issueVendor').value = '';
-      document.getElementById('issueProduct').value = '';
-      document.getElementById('issueType').value = '';
-      document.getElementById('issueQuantity').value = '';
-      document.getElementById('issueDate').value = new Date().toISOString().split('T')[0];
-      document.getElementById('issueLoss').value = '';
-      document.getElementById('issueDescription').value = '';
+      document.getElementById("issueVendor").value = "";
+      document.getElementById("issueDate").value = new Date()
+        .toISOString()
+        .split("T")[0];
+      document.getElementById("issueDescription").value = "";
+      document.getElementById("issueItemsList").innerHTML = "";
+      issueItemCounter = 0;
     }
 
     function updateIssuesDisplay() {
-      const pendingIssues = issues.filter(issue => issue.status === 'pending');
-      const resolvedIssues = issues.filter(issue => issue.status === 'resolved');
-      const totalLoss = issues.reduce((sum, issue) => sum + issue.estimatedLoss, 0);
+      const pendingIssues = issues.filter(
+        (issue) => issue.status === "pending"
+      );
+      const resolvedIssues = issues.filter(
+        (issue) => issue.status === "resolved"
+      );
+      const totalLoss = issues.reduce(
+        (sum, issue) => sum + (issue.estimatedLoss || 0),
+        0
+      );
 
-      document.getElementById('pendingIssuesCount').textContent = pendingIssues.length;
-      document.getElementById('resolvedIssuesCount').textContent = resolvedIssues.length;
-      document.getElementById('totalIssuesCount').textContent = issues.length;
-      document.getElementById('totalLossAmount').textContent = `₹${totalLoss}`;
+      console.log("Updating issues display with", issues.length, "issues");
 
-      const issuesList = document.getElementById('issuesList');
-      issuesList.innerHTML = '';
+      document.getElementById("pendingIssuesCount").textContent =
+        pendingIssues.length;
+      document.getElementById("resolvedIssuesCount").textContent =
+        resolvedIssues.length;
+      document.getElementById("totalIssuesCount").textContent = issues.length;
+      document.getElementById("totalLossAmount").textContent = `₹${totalLoss}`;
+
+      issuesList.innerHTML = "";
 
       if (issues.length === 0) {
-        issuesList.innerHTML = '<div class="alert alert-success">No issues reported yet. Great job!</div>';
+        issuesList.innerHTML =
+          '<div class="alert alert-success">No issues reported yet. Great job!</div>';
         return;
       }
 
       const sortedIssues = [...issues].sort((a, b) => {
-        if (a.status !== b.status) return a.status === 'pending' ? -1 : 1;
+        if (a.status !== b.status) return a.status === "pending" ? -1 : 1;
         return new Date(b.dateFound) - new Date(a.dateFound);
       });
 
-      sortedIssues.forEach(issue => {
-        const vendor = vendors.find(v => v.id === issue.vendorId);
-        const issueDiv = document.createElement('div');
-        issueDiv.className = `issue-item ${issue.status === 'resolved' ? 'resolved' : ''}`;
+      sortedIssues.forEach((issue) => {
+        // Handle both vendorId and vendor_id for vendor lookup
+        const vendorId = issue.vendorId || issue.vendor_id;
+        const vendor = vendors.find((v) => v.id == vendorId || v.id == vendorId);
+        const issueDiv = document.createElement("div");
+        issueDiv.className = `issue-item ${issue.status === "resolved" ? "resolved" : ""
+          }`;
 
-        const daysPending = issue.status === 'pending' ?
-          Math.ceil((new Date() - new Date(issue.dateFound)) / (1000 * 60 * 60 * 24)) : 0;
+        // Debug logging to see the actual issue data structure
+        console.log("Processing issue:", issue);
+        console.log("Vendor ID:", vendorId);
+        console.log("Vendor found:", vendor);
+
+        const daysPending =
+          issue.status === "pending"
+            ? Math.ceil(
+              (new Date() - new Date(issue.dateFound)) /
+              (1000 * 60 * 60 * 24)
+            )
+            : 0;
 
         issueDiv.innerHTML = `
                     <div class="issue-header">
                         <div>
-                            <strong>${issue.productName}</strong> - ${vendor ? vendor.name : 'Unknown Vendor'}
-                            <div class="issue-date">Found: ${issue.dateFound} | Type: ${issue.issueType.toUpperCase()} ${issue.status === 'pending' && daysPending > 0 ? `| ${daysPending} days pending` : ''}</div>
+                            <button class="btn btn-sm btn-info" onclick="toggleIssueDetails(${issue.id})" style="margin-right: 8px;">📋</button>
+                            <strong>${issue.productName || issue.product_name || issue.productname || "Unknown Product"}</strong> - ${vendor ? (vendor.name || vendor.vendor_name || "Unknown Vendor") : "Unknown Vendor"
+          }
+                            <div class="issue-date">Found: ${(issue.dateFound || issue.date_found || issue.datefound) ? new Date(issue.dateFound || issue.date_found || issue.datefound).toLocaleString('en-US', dateFormatOptions) : "Unknown Date"
+          } | Type: ${(issue.issueType || issue.issue_type || issue.issuetype)?.toUpperCase() || "UNKNOWN"} ${issue.status === "pending" && daysPending > 0
+            ? `| ${daysPending} days pending`
+            : ""
+          }</div>
                         </div>
                         <div>
-                            ${issue.status === 'pending' ?
-            `<button class="btn btn-success resolve-btn" onclick="resolveIssue(${issue.id})">Mark Resolved</button>` :
-            `<span style="color: #2e7d32; font-weight: 600;">✅ RESOLVED (${issue.resolvedDate})</span>`
+                            ${issue.status === "pending"
+            ? `<button class="btn btn-success resolve-btn" onclick="resolveIssue(${issue.id})">Mark Resolved</button>`
+            : `<span style="color: #2e7d32; font-weight: 600;">✅ RESOLVED (${(issue.resolvedDate || issue.resolved_date || issue.resolveddate) ? new Date(issue.resolvedDate || issue.resolved_date || issue.resolveddate).toLocaleString('en-US', dateFormatOptions) : "Unknown Date"})</span>`
           }
                         </div>
                     </div>
                     <div>
-                        <p><strong>Quantity:</strong> ${issue.quantity} units | <strong>Estimated Loss:</strong> ₹${issue.estimatedLoss}</p>
-                        ${issue.description ? `<p><strong>Description:</strong> ${issue.description}</p>` : ''}
-                        ${vendor && vendor.phone ? `<p><strong>Vendor Contact:</strong> ${vendor.phone}</p>` : ''}
+                        <p><strong>Quantity:</strong> ${issue.quantity || issue.qty || 0
+          } units | <strong>Estimated Loss:</strong> ₹${issue.estimatedLoss || issue.estimated_loss || issue.estimatedloss || 0
+          }</p>
+                        ${issue.description
+            ? `<p><strong>Description:</strong> ${issue.description}</p>`
+            : ""
+          }
+                        ${vendor && (vendor.phone || vendor.phone_number)
+            ? `<p><strong>Vendor Contact:</strong> ${vendor.phone || vendor.phone_number}</p>`
+            : ""
+          }
+                    </div>
+                    <div id="issue-details-${issue.id}" class="issue-details-content" style="display: none; padding: 20px; background: #f8f9fa; border-radius: 8px; margin: 10px 0;">
+                        <h5>📋 Complete Issue Details</h5>
+                        <div class="details-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <h6>📊 Issue Information</h6>
+                                <p><strong>Product Name:</strong> ${issue.productName || issue.product_name || issue.productname || "Unknown"}</p>
+                                <p><strong>Issue Type:</strong> ${(issue.issueType || issue.issue_type || issue.issuetype)?.toUpperCase() || "UNKNOWN"}</p>
+                                <p><strong>Quantity Affected:</strong> ${issue.quantity || issue.qty || 0} units</p>
+                                <p><strong>Estimated Loss:</strong> ₹${issue.estimatedLoss || issue.estimated_loss || issue.estimatedloss || 0}</p>
+                                <p><strong>Date Found:</strong> ${(issue.dateFound || issue.date_found || issue.datefound) ? new Date(issue.dateFound || issue.date_found || issue.datefound).toLocaleString('en-US', dateFormatOptions) : "Unknown Date"}</p>
+                                <p><strong>Status:</strong> <span style="color: ${issue.status === 'pending' ? '#c62828' : '#2e7d32'}; font-weight: 600;">${issue.status?.toUpperCase() || "UNKNOWN"}</span></p>
+                                ${issue.status === 'resolved' ? `<p><strong>Resolved Date:</strong> ${(issue.resolvedDate || issue.resolved_date || issue.resolveddate) ? new Date(issue.resolvedDate || issue.resolved_date || issue.resolveddate).toLocaleString('en-US', dateFormatOptions) : "Unknown Date"}</p>` : ''}
+                            </div>
+                            <div>
+                                <h6>📝 Notes & Description</h6>
+                                <p><strong>Description:</strong></p>
+                                <div style="background: white; padding: 10px; border-radius: 4px; border: 1px solid #ddd; max-height: 100px; overflow-y: auto;">
+                                    ${issue.description || "No description provided"}
+                                </div>
+                                <p style="margin-top: 10px;"><strong>Days Pending:</strong> ${daysPending} days</p>
+                                <p><strong>Date Added:</strong> ${(issue.dateAdded || issue.date_added || issue.dateadded) ? new Date(issue.dateAdded || issue.date_added || issue.dateadded).toLocaleDateString() : "Unknown"}</p>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <h6>🏢 Vendor Information</h6>
+                            <p><strong>Vendor Name:</strong> ${vendor ? (vendor.name || vendor.vendor_name || "Unknown") : "Unknown"}</p>
+                            <p><strong>Vendor Phone:</strong> ${vendor && (vendor.phone || vendor.phone_number) ? (vendor.phone || vendor.phone_number) : "Not available"}</p>
+                            <p><strong>Vendor Email:</strong> ${vendor && (vendor.email) ? vendor.email : "Not available"}</p>
+                        </div>
                     </div>
                 `;
 
@@ -957,200 +2515,374 @@
       });
     }
 
+    function toggleIssueDetails(issueId) {
+      const detailsDiv = document.getElementById(`issue-details-${issueId}`);
+      if (detailsDiv) {
+        const isVisible = detailsDiv.style.display !== "none";
+        detailsDiv.style.display = isVisible ? "none" : "block";
+
+        // Update button text
+        const button = event.target;
+        button.textContent = isVisible ? "📋" : "📋";
+        button.className = isVisible ? "btn btn-sm btn-info" : "btn btn-sm btn-success";
+      }
+    }
+
     async function resolveIssue(issueId) {
-      if (confirm('Mark this issue as resolved?')) {
+      if (confirm("Mark this issue as resolved?")) {
         try {
-          await apiCall(`/api/issues/${issueId}`, 'PUT', {status: 'resolved'});
-          const issue = issues.find(i => i.id === issueId);
-          if (issue) {
-            issue.status = 'resolved';
-            issue.resolvedDate = new Date().toISOString().split('T')[0];
+          const result = await apiCall(`/api/issues/${issueId}`, "PUT", {
+            status: "resolved",
+          });
+          if (result.success) {
+            const issue = issues.find((i) => i.id == issueId);
+            if (issue) {
+              issue.status = "resolved";
+              issue.resolvedDate = new Date().toISOString().split("T")[0];
+            }
+            updateIssuesDisplay();
+            updateVendorTable();
+            updateDataStatus();
+            alert("✅ Issue resolved and database.json updated!");
+          } else {
+            throw new Error(result.error || "Unknown error");
           }
-          updateIssuesDisplay();
-          updateVendorTable();
-          updateDataStatus();
-          alert('✅ Issue marked as resolved and database updated!');
         } catch (error) {
-          alert('❌ Failed to resolve issue');
+          console.error("Failed to resolve issue:", error);
+          alert("❌ Failed to resolve issue: " + error.message);
         }
       }
     }
 
     function updateReportSummary() {
-      const totalDisplayRevenue = vendors.reduce((sum, vendor) => sum + vendor.displayRent, 0);
-      document.getElementById('reportVendorCount').textContent = vendors.length;
-      document.getElementById('reportBrandCount').textContent = brands.length;
-      document.getElementById('reportPendingCount').textContent = issues.filter(i => i.status === 'pending').length;
-      document.getElementById('reportDisplayRevenue').textContent = `₹${totalDisplayRevenue}`;
+      const totalDisplayRevenue = vendors.reduce(
+        (sum, vendor) => sum + (vendor.displayRent || vendor.display_rent || vendor.displayrent || 0),
+        0
+      );
+      document.getElementById("reportVendorCount").textContent =
+        vendors.length;
+      document.getElementById("reportBrandCount").textContent = brands.length;
+      document.getElementById("reportPendingCount").textContent =
+        issues.filter((i) => i.status === "pending").length;
+      document.getElementById(
+        "reportDisplayRevenue"
+      ).textContent = `₹${totalDisplayRevenue}`;
     }
 
     async function createBackup() {
       try {
-        window.open('/api/backup', '_blank');
-        alert('✅ Backup created and downloaded!');
+        window.open(`${API_BASE_URL}/api/backup`, "_blank");
+        alert("✅ Backup created and downloaded from database.json!");
       } catch (error) {
-        alert('❌ Failed to create backup');
+        console.error("Backup failed:", error);
+        alert("❌ Failed to create backup: " + error.message);
       }
     }
 
     function exportVendorData() {
-      if (vendors.length === 0) {alert('No vendor data to export'); return;}
+      if (vendors.length === 0) {
+        alert("No vendor data to export");
+        return;
+      }
 
-      const exportData = vendors.map(vendor => {
-        const vendorBrands = brands.filter(b => b.vendorId === vendor.id);
-        const pendingIssues = issues.filter(i => i.vendorId === vendor.id && i.status === 'pending');
-        const brandNames = vendorBrands.map(b => b.name).join(', ');
+      const exportData = vendors.map((vendor) => {
+        const vendorBrands = brands.filter((b) => (b.vendorId || b.vendor_id) == vendor.id);
+        const pendingIssues = issues.filter(
+          (i) => (i.vendorId || i.vendor_id) == vendor.id && i.status === "pending"
+        );
+        const lastInvoice = invoicePayments
+          .filter((inv) => (inv.vendorId || inv.vendor_id) == vendor.id)
+          .sort(
+            (a, b) => new Date(b.invoiceDate || b.invoice_date) - new Date(a.invoiceDate || a.invoice_date)
+          )[0];
+
+        const brandNames = vendorBrands.map((b) => b.name).join(", ");
 
         return {
-          'Vendor Name': vendor.name,
-          'Contact Person': vendor.contactPerson || '',
-          'Phone': vendor.phone || '',
-          'Email': vendor.email || '',
-          'Payment Terms': vendor.paymentTerms,
-          'Visit Frequency': vendor.visitFrequency,
-          'Last Visit': vendor.lastVisit || '',
-          'Next Visit': vendor.nextVisit || '',
-          'Has Display': vendor.hasDisplay,
-          'Display Rent (₹)': vendor.displayRent,
-          'Brands/Products': brandNames || 'None',
-          'Pending Issues': pendingIssues.length,
-          'Terms & Conditions': vendor.termsConditions || '',
-          'Remarks': vendor.remarks || ''
+          "Vendor Name": vendor.name,
+          "Contact Person": vendor.contactPerson || "",
+          Phone: vendor.phone || "",
+          Email: vendor.email || "",
+          "Payment Terms": vendor.paymentTerms,
+          "Visit Frequency": vendor.visitFrequency,
+          "Last Visit": vendor.lastVisit ? new Date(vendor.lastVisit).toLocaleString('en-US', dateFormatOptions) : "",
+          "Next Visit": vendor.nextVisit ? new Date(vendor.nextVisit).toLocaleString('en-US', dateFormatOptions) : "",
+          "Has Display": vendor.hasDisplay,
+          "Display Rent (₹)": vendor.displayRent,
+          "Last Invoice Number": lastInvoice?.invoiceNumber || lastInvoice?.invoice_number || "",
+          "Last Invoice Amount": lastInvoice?.invoiceAmount || lastInvoice?.invoice_amount || 0,
+          "Payment Status": lastInvoice?.paymentStatus || lastInvoice?.payment_status || "No data",
+          "Brands/Products": brandNames || "None",
+          "Pending Issues": pendingIssues.length,
+          "Terms & Conditions": vendor.termsConditions || "",
+          Remarks: vendor.remarks || "",
         };
       });
 
       const ws = XLSX.utils.json_to_sheet(exportData);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Vendors');
-      XLSX.writeFile(wb, `Vendor_Data_${new Date().toISOString().split('T')[0]}.xlsx`);
+      XLSX.utils.book_append_sheet(wb, ws, "Vendors");
+      XLSX.writeFile(
+        wb,
+        `Vendor_Data_${new Date().toISOString().split("T")[0]}.xlsx`
+      );
+    }
+
+    function exportInvoiceData() {
+      if (invoicePayments.length === 0) {
+        alert("No invoice data to export");
+        return;
+      }
+
+      const exportData = invoicePayments.map((invoice) => {
+        const vendor = vendors.find((v) => v.id === invoice.vendorId);
+        return {
+          "Vendor Name": vendor ? vendor.name : "Unknown",
+          "Vendor Phone": vendor ? vendor.phone : "",
+          "Invoice Number": invoice.invoiceNumber,
+          "Invoice Date": invoice.invoiceDate ? new Date(invoice.invoiceDate).toLocaleString('en-US', dateFormatOptions) : "",
+          "Invoice Amount (₹)": invoice.invoiceAmount,
+          "Total Items": invoice.totalItems || "",
+          "Due Date": invoice.dueDate ? new Date(invoice.dueDate).toLocaleString('en-US', dateFormatOptions) : "",
+          "Payment Status": invoice.paymentStatus?.toUpperCase(),
+          "Payment Method": invoice.paymentMethod || "",
+          "Cheque Number": invoice.chequeNumber || "",
+          "Cheque Date": invoice.chequeDate ? new Date(invoice.chequeDate).toLocaleString('en-US', dateFormatOptions) : "",
+          "Payment Given Date": invoice.paymentGivenDate ? new Date(invoice.paymentGivenDate).toLocaleString('en-US', dateFormatOptions) : "",
+          "Payment Amount (₹)": invoice.paymentAmount || "",
+          "Outstanding (₹)":
+            invoice.invoiceAmount - (invoice.paymentAmount || 0),
+          "Payment Notes": invoice.paymentNotes || "",
+        };
+      });
+
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Invoice & Payments");
+      XLSX.writeFile(
+        wb,
+        `Invoice_Payment_Data_${new Date().toISOString().split("T")[0]}.xlsx`
+      );
     }
 
     function exportBrandData() {
-      if (brands.length === 0) {alert('No brand data to export'); return;}
+      if (brands.length === 0) {
+        alert("No brand data to export");
+        return;
+      }
 
-      const exportData = brands.map(brand => {
-        const vendor = vendors.find(v => v.id === brand.vendorId);
+      const exportData = brands.map((brand) => {
+        const vendor = vendors.find((v) => v.id === brand.vendorId);
         return {
-          'Brand/Product Name': brand.name,
-          'Vendor Name': vendor ? vendor.name : 'Unknown',
-          'Vendor Phone': vendor ? vendor.phone : '',
-          'Category': brand.category,
-          'SKU/Code': brand.sku || '',
-          'Date Added': brand.dateAdded
+          "Brand/Product Name": brand.name,
+          "Vendor Name": vendor ? vendor.name : "Unknown",
+          "Vendor Phone": vendor ? vendor.phone : "",
+          Category: brand.category,
+          "SKU/Code": brand.sku || "",
+          "Date Added": brand.dateAdded,
         };
       });
 
       const ws = XLSX.utils.json_to_sheet(exportData);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Brands');
-      XLSX.writeFile(wb, `Brand_Data_${new Date().toISOString().split('T')[0]}.xlsx`);
+      XLSX.utils.book_append_sheet(wb, ws, "Brands");
+      XLSX.writeFile(
+        wb,
+        `Brand_Data_${new Date().toISOString().split("T")[0]}.xlsx`
+      );
     }
 
     function exportIssuesReport() {
-      if (issues.length === 0) {alert('No issues to export'); return;}
+      if (issues.length === 0) {
+        alert("No issues to export");
+        return;
+      }
 
-      const exportData = issues.map(issue => {
-        const vendor = vendors.find(v => v.id === issue.vendorId);
-        const daysPending = issue.status === 'pending' ?
-          Math.ceil((new Date() - new Date(issue.dateFound)) / (1000 * 60 * 60 * 24)) : '';
+      const exportData = issues.map((issue) => {
+        const vendor = vendors.find((v) => v.id === issue.vendorId);
+        const daysPending =
+          issue.status === "pending"
+            ? Math.ceil(
+              (new Date() - new Date(issue.dateFound)) /
+              (1000 * 60 * 60 * 24)
+            )
+            : "";
 
         return {
-          'Date Found': issue.dateFound,
-          'Vendor Name': vendor ? vendor.name : 'Unknown',
-          'Vendor Phone': vendor ? vendor.phone : '',
-          'Product Name': issue.productName,
-          'Issue Type': issue.issueType.toUpperCase(),
-          'Quantity Affected': issue.quantity,
-          'Estimated Loss (₹)': issue.estimatedLoss,
-          'Description': issue.description || '',
-          'Status': issue.status.toUpperCase(),
-          'Resolved Date': issue.resolvedDate || '',
-          'Days Pending': daysPending,
-          'Action Required': issue.status === 'pending' ? 'Discuss with vendor' : 'Resolved'
+          "Date Found": issue.dateFound,
+          "Vendor Name": vendor ? vendor.name : "Unknown",
+          "Vendor Phone": vendor ? vendor.phone : "",
+          "Product Name": issue.productName,
+          "Issue Type": issue.issueType?.toUpperCase(),
+          "Quantity Affected": issue.quantity,
+          "Estimated Loss (₹)": issue.estimatedLoss,
+          Description: issue.description || "",
+          Status: issue.status?.toUpperCase(),
+          "Resolved Date": issue.resolvedDate || "",
+          "Days Pending": daysPending,
+          "Action Required":
+            issue.status === "pending" ? "Discuss with vendor" : "Resolved",
         };
       });
 
       const ws = XLSX.utils.json_to_sheet(exportData);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Issues Report');
-      XLSX.writeFile(wb, `Issues_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
+      XLSX.utils.book_append_sheet(wb, ws, "Issues Report");
+      XLSX.writeFile(
+        wb,
+        `Issues_Report_${new Date().toISOString().split("T")[0]}.xlsx`
+      );
     }
 
     function exportCompleteData() {
       const wb = XLSX.utils.book_new();
 
       if (vendors.length > 0) {
-        const vendorData = vendors.map(vendor => {
-          const vendorBrands = brands.filter(b => b.vendorId === vendor.id);
-          const pendingIssues = issues.filter(i => i.vendorId === vendor.id && i.status === 'pending');
-          const brandNames = vendorBrands.map(b => b.name).join(', ');
+        const vendorData = vendors.map((vendor) => {
+          const vendorBrands = brands.filter((b) => b.vendorId === vendor.id);
+          const pendingIssues = issues.filter(
+            (i) => i.vendorId === vendor.id && i.status === "pending"
+          );
+          const lastInvoice = invoicePayments
+            .filter((inv) => inv.vendorId === vendor.id)
+            .sort(
+              (a, b) => new Date(b.invoiceDate) - new Date(a.invoiceDate)
+            )[0];
+
+          const brandNames = vendorBrands.map((b) => b.name).join(", ");
 
           return {
-            'Vendor Name': vendor.name,
-            'Contact Person': vendor.contactPerson || '',
-            'Phone': vendor.phone || '',
-            'Email': vendor.email || '',
-            'Payment Terms': vendor.paymentTerms,
-            'Visit Frequency': vendor.visitFrequency,
-            'Last Visit': vendor.lastVisit || '',
-            'Next Visit': vendor.nextVisit || '',
-            'Has Display': vendor.hasDisplay,
-            'Display Rent (₹)': vendor.displayRent,
-            'Brands/Products': brandNames || 'None',
-            'Pending Issues': pendingIssues.length,
-            'Terms & Conditions': vendor.termsConditions || '',
-            'Remarks': vendor.remarks || ''
+            "Vendor Name": vendor.name,
+            "Contact Person": vendor.contactPerson || "",
+            Phone: vendor.phone || "",
+            Email: vendor.email || "",
+            "Payment Terms": vendor.paymentTerms,
+            "Visit Frequency": vendor.visitFrequency,
+            "Last Visit": vendor.lastVisit || "",
+            "Next Visit": vendor.nextVisit || "",
+            "Has Display": vendor.hasDisplay,
+            "Display Rent (₹)": vendor.displayRent,
+            "Last Invoice": lastInvoice?.invoiceNumber || "",
+            "Last Invoice Amount": lastInvoice?.invoiceAmount || 0,
+            "Payment Status": lastInvoice?.paymentStatus || "",
+            "Brands/Products": brandNames || "None",
+            "Pending Issues": pendingIssues.length,
+            "Terms & Conditions": vendor.termsConditions || "",
+            Remarks: vendor.remarks || "",
           };
         });
 
         const vendorWs = XLSX.utils.json_to_sheet(vendorData);
-        XLSX.utils.book_append_sheet(wb, vendorWs, 'Vendors');
+        XLSX.utils.book_append_sheet(wb, vendorWs, "Vendors");
+      }
+
+      if (invoicePayments.length > 0) {
+        const invoiceData = invoicePayments.map((invoice) => {
+          const vendor = vendors.find((v) => v.id === invoice.vendorId);
+          return {
+            "Vendor Name": vendor ? vendor.name : "Unknown",
+            "Invoice Number": invoice.invoiceNumber,
+            "Invoice Date": invoice.invoiceDate,
+            "Invoice Amount (₹)": invoice.invoiceAmount,
+            "Total Items": invoice.totalItems || "",
+            "Due Date": invoice.dueDate || "",
+            "Payment Status": invoice.paymentStatus?.toUpperCase(),
+            "Payment Method": invoice.paymentMethod || "",
+            "Cheque Number": invoice.chequeNumber || "",
+            "Cheque Date": invoice.chequeDate || "",
+            "Payment Given Date": invoice.paymentGivenDate || "",
+            "Payment Amount (₹)": invoice.paymentAmount || "",
+            "Outstanding (₹)":
+              invoice.invoiceAmount - (invoice.paymentAmount || 0),
+            "Payment Notes": invoice.paymentNotes || "",
+          };
+        });
+
+        const invoiceWs = XLSX.utils.json_to_sheet(invoiceData);
+        XLSX.utils.book_append_sheet(wb, invoiceWs, "Invoice & Payments");
       }
 
       if (brands.length > 0) {
-        const brandData = brands.map(brand => {
-          const vendor = vendors.find(v => v.id === brand.vendorId);
+        const brandData = brands.map((brand) => {
+          const vendor = vendors.find((v) => v.id === brand.vendorId);
           return {
-            'Brand/Product Name': brand.name,
-            'Vendor Name': vendor ? vendor.name : 'Unknown',
-            'Category': brand.category,
-            'SKU/Code': brand.sku || '',
-            'Date Added': brand.dateAdded
+            "Brand/Product Name": brand.name,
+            "Vendor Name": vendor ? vendor.name : "Unknown",
+            Category: brand.category,
+            "SKU/Code": brand.sku || "",
+            "Date Added": brand.dateAdded,
           };
         });
 
         const brandWs = XLSX.utils.json_to_sheet(brandData);
-        XLSX.utils.book_append_sheet(wb, brandWs, 'Brands');
+        XLSX.utils.book_append_sheet(wb, brandWs, "Brands");
       }
 
       if (issues.length > 0) {
-        const issueData = issues.map(issue => {
-          const vendor = vendors.find(v => v.id === issue.vendorId);
+        const issueData = issues.map((issue) => {
+          const vendor = vendors.find((v) => v.id === issue.vendorId);
           return {
-            'Date Found': issue.dateFound,
-            'Vendor Name': vendor ? vendor.name : 'Unknown',
-            'Product Name': issue.productName,
-            'Issue Type': issue.issueType.toUpperCase(),
-            'Quantity': issue.quantity,
-            'Estimated Loss (₹)': issue.estimatedLoss,
-            'Description': issue.description || '',
-            'Status': issue.status.toUpperCase(),
-            'Resolved Date': issue.resolvedDate || ''
+            "Date Found": issue.dateFound,
+            "Vendor Name": vendor ? vendor.name : "Unknown",
+            "Product Name": issue.productName,
+            "Issue Type": issue.issueType?.toUpperCase(),
+            Quantity: issue.quantity,
+            "Estimated Loss (₹)": issue.estimatedLoss,
+            Description: issue.description || "",
+            Status: issue.status?.toUpperCase(),
+            "Resolved Date": issue.resolvedDate || "",
           };
         });
 
         const issueWs = XLSX.utils.json_to_sheet(issueData);
-        XLSX.utils.book_append_sheet(wb, issueWs, 'Issues');
+        XLSX.utils.book_append_sheet(wb, issueWs, "Issues");
       }
 
-      XLSX.writeFile(wb, `Complete_Vendor_Management_${new Date().toISOString().split('T')[0]}.xlsx`);
+      XLSX.writeFile(
+        wb,
+        `Complete_Vendor_Management_${new Date().toISOString().split("T")[0]
+        }.xlsx`
+      );
     }
 
     // Initialize app
-    document.addEventListener('DOMContentLoaded', async function () {
-      document.getElementById('issueDate').value = new Date().toISOString().split('T')[0];
+    document.addEventListener("DOMContentLoaded", async function () {
+      const today = new Date().toISOString().split("T")[0];
+      document.getElementById("issueDate").value = today;
+      document.getElementById("invoiceDate").value = today;
+      document.getElementById("paymentDate").value = today;
+      document.getElementById("creditDate").value = today;
+
+      // Prevent any accidental form submissions that might cause page refresh
+      document.addEventListener("submit", function (e) {
+        e.preventDefault();
+        console.log("Form submission prevented to avoid page refresh");
+      });
+
       await loadData();
-    });
+
+      // Set up brand search and filter event listeners
+      document.getElementById("brandSearchInput").addEventListener("input", updateBrandTable);
+      document.getElementById("brandVendorFilter").addEventListener("change", updateBrandTable);
+      document.getElementById("brandCategoryFilter").addEventListener("change", updateBrandTable);
+
+      // Restore the last active tab if available
+      const lastTab = localStorage.getItem("currentTab");
+      if (lastTab && document.getElementById(lastTab)) {
+        showTab(lastTab);
+        // Update the tab button to show as active
+        document.querySelectorAll(".tab").forEach((tab) => {
+          if (
+            tab.getAttribute("onclick") &&
+            tab.getAttribute("onclick").includes(lastTab)
+          ) {
+            tab.classList.add("active");
+          } else {
+            tab.classList.remove("active");
+          }
+        });
+      }
+    })
   </script>
 </body>
 
